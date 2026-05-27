@@ -50,3 +50,6 @@ coverage/
 .superpowers/
 .claude/
 docs/
+
+# Claude Code context — local guidance, not for public repo
+CLAUDE.md
