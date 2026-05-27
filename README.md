@@ -17,7 +17,7 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - **Open prompts** — every translation prompt is editable. Tune for academic / casual / technical / your-own-style
 - **One-click connection test** — verify endpoint + model in the popup before translating
 
-## Features (v1)
+## Features
 
 - Selection-based translation with floating icon (or hotkey-only mode)
 - Streaming output via Server-Sent Events
