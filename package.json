@@ -1,0 +1,43 @@
+{
+  "name": "browser-translate",
+  "description": "Open-source LLM-powered translation extension (bring your own key).",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "test": "vitest",
+    "test:run": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write src",
+    "typecheck": "wxt prepare && tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "lucide-preact": "^1.16.0",
+    "preact": "^10.26.9",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/preact": "^3.2.4",
+    "@types/chrome": "^0.1.42",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "^4.1.7",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^8.57.1",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.5.15",
+    "prettier": "^3.8.3",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.7",
+    "wxt": "^0.20.26"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "extName": { "message": "BrowserTranslate" },
+  "extDescription": { "message": "开源的 LLM 浏览器翻译扩展（自带 API Key）。" },
+  "settingsTitle": { "message": "设置" },
+  "tabProfiles": { "message": "配置档" },
+  "tabTemplates": { "message": "提示词模板" },
+  "tabGeneral": { "message": "通用" },
+  "tabHistory": { "message": "历史记录" },
+  "btnNew": { "message": "新建" },
+  "btnSave": { "message": "保存" },
+  "btnCancel": { "message": "取消" },
+  "btnDelete": { "message": "删除" },
+  "btnCopy": { "message": "复制" },
+  "btnRetry": { "message": "重译" },
+  "btnAsk": { "message": "追问" },
+  "active": { "message": "当前" },
+  "builtin": { "message": "内置" },
+  "noProfiles": { "message": "尚无配置档，请先创建一个。" },
+  "noProfileError": { "message": "尚未配置 Profile，请打开设置页添加。" },
+  "translating": { "message": "翻译中..." }
+}

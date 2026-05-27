@@ -46,7 +46,7 @@ coverage/
 .eslintcache
 .parcel-cache/
 
-# Superpowers brainstorming artifacts & internal planning docs (local only)
+# Superpowers brainstorming artifacts & all docs (local only)
 .superpowers/
 .claude/
-docs/superpowers/
+docs/

@@ -1,0 +1,128 @@
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Apparatus color tokens */
+  --ap-bg:        252 252 250;  /* #FCFCFA — paper white */
+  --ap-surface:   255 255 255;  /* pure white for cards on bg */
+  --ap-fg:        24 24 27;     /* #18181B — charcoal */
+  --ap-fg-muted:  113 113 122;  /* #71717A */
+  --ap-fg-subtle: 161 161 170;  /* #A1A1AA */
+  --ap-border:    228 228 231;  /* #E4E4E7 hairline */
+  --ap-border-strong: 212 212 216;
+  --ap-brand:     37 99 235;    /* #2563EB cobalt */
+  --ap-brand-fg:  255 255 255;
+  --ap-brand-soft: 219 234 254; /* #DBEAFE — soft cobalt */
+  --ap-accent:    24 24 27;     /* charcoal for secondary accent */
+  --ap-danger:    220 38 38;    /* #DC2626 */
+  --ap-success:   22 163 74;    /* #16A34A */
+}
+
+.dark {
+  --ap-bg:        10 10 10;     /* #0A0A0A */
+  --ap-surface:   23 23 23;     /* #171717 */
+  --ap-fg:        244 244 245;  /* #F4F4F5 */
+  --ap-fg-muted:  161 161 170;
+  --ap-fg-subtle: 113 113 122;
+  --ap-border:    39 39 42;     /* #27272A */
+  --ap-border-strong: 63 63 70;
+  --ap-brand:     59 130 246;   /* #3B82F6 — brighter cobalt for dark */
+  --ap-brand-fg:  255 255 255;
+  --ap-brand-soft: 30 58 138;   /* deep blue accent */
+}
+
+html, body {
+  background: rgb(var(--ap-bg));
+  color: rgb(var(--ap-fg));
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'cv11', 'ss03', 'ss05';  /* Geist stylistic sets */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Engineering grid pattern utility */
+.ap-grid-bg {
+  background-image:
+    linear-gradient(rgb(var(--ap-border) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--ap-border) / 0.5) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-position: -1px -1px;
+}
+
+/* Hairline rule with optional center label hole */
+.ap-rule {
+  border-top: 1px solid rgb(var(--ap-border));
+}
+
+/* Custom focus ring — single hairline, no fat browser default */
+*:focus-visible {
+  outline: 1px solid rgb(var(--ap-brand));
+  outline-offset: 1px;
+}
+
+/* Custom scrollbar — thin, transparent track, blends with the popup */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--ap-border-strong) / 0.6) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--ap-border-strong) / 0.55);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--ap-fg-muted) / 0.7);
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}

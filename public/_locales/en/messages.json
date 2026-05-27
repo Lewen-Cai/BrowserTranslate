@@ -1,0 +1,21 @@
+{
+  "extName": { "message": "BrowserTranslate" },
+  "extDescription": { "message": "Open-source LLM-powered translation extension (bring your own key)." },
+  "settingsTitle": { "message": "Settings" },
+  "tabProfiles": { "message": "Profiles" },
+  "tabTemplates": { "message": "Prompt Templates" },
+  "tabGeneral": { "message": "General" },
+  "tabHistory": { "message": "History" },
+  "btnNew": { "message": "New" },
+  "btnSave": { "message": "Save" },
+  "btnCancel": { "message": "Cancel" },
+  "btnDelete": { "message": "Delete" },
+  "btnCopy": { "message": "Copy" },
+  "btnRetry": { "message": "Retry" },
+  "btnAsk": { "message": "Ask" },
+  "active": { "message": "Active" },
+  "builtin": { "message": "Built-in" },
+  "noProfiles": { "message": "No profiles yet. Create one to start translating." },
+  "noProfileError": { "message": "No profile configured. Open settings to add one." },
+  "translating": { "message": "Translating..." }
+}

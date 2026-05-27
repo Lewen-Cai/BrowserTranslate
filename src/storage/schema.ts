@@ -1,0 +1,62 @@
+export const APP_DATA_VERSION = 1 as const;
+
+export interface AppData {
+  version: typeof APP_DATA_VERSION;
+  api: ApiSettings;
+  settings: GlobalSettings;
+  promptTemplates: PromptTemplate[];
+}
+
+export interface ApiSettings {
+  baseUrl: string;
+  apiKey: string;
+  model: string;
+  maxTokens?: number;
+  promptTemplateId: string;
+  customHeaders?: Record<string, string>;
+}
+
+export interface GlobalSettings {
+  targetLanguage: string;
+  triggerMode: 'icon' | 'hotkey';
+  hotkey: string;
+  streamingEnabled: boolean;
+  cacheEnabled: boolean;
+  cacheTTLDays: number;
+  historyEnabled: boolean;
+  historyMaxEntries: number;
+  theme: 'light' | 'dark' | 'auto';
+  uiLanguage: 'zh-CN' | 'en' | 'auto';
+}
+
+export interface PromptTemplate {
+  id: string;
+  name: string;
+  isBuiltin: boolean;
+  systemPrompt: string;
+  userPromptTemplate: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CacheMeta {
+  key: string;
+  storageKey: string;
+  createdAt: number;
+  hitCount: number;
+}
+
+export interface CacheEntry {
+  translated: string;
+}
+
+export interface HistoryEntry {
+  id: string;
+  sourceText: string;
+  translatedText: string;
+  model: string;        // ← was profileId; snapshot of model used at translation time
+  targetLang: string;
+  url?: string;
+  title?: string;
+  createdAt: number;
+}
