@@ -43,13 +43,16 @@ export class OpenAICompatibleProvider implements TranslationProvider {
 
     let response: Response;
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        ...this.cfg.customHeaders,
+      };
+      if (this.cfg.apiKey) {
+        headers['Authorization'] = `Bearer ${this.cfg.apiKey}`;
+      }
       response = await fetch(this.endpoint, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.cfg.apiKey}`,
-          ...this.cfg.customHeaders,
-        },
+        headers,
         body: JSON.stringify(body),
         signal: opts.signal,
       });

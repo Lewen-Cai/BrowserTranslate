@@ -63,7 +63,8 @@ async function handleTranslate(
 
   try {
     const api = data.api;
-    if (!api.baseUrl || !api.apiKey || !api.model) {
+    const missingKey = api.providerType === 'cloud' && !api.apiKey;
+    if (!api.baseUrl || missingKey || !api.model) {
       const locale = localeFromSetting(data.settings.uiLanguage);
       send({
         type: 'translate:error',
@@ -166,8 +167,12 @@ async function handlePing(requestId: string, client: StorageClient): Promise<voi
     chrome.runtime.sendMessage(payload).catch(() => {});
   };
 
-  if (!api.baseUrl || !api.apiKey) {
-    send({ type: 'ping:error', requestId, message: 'Base URL or API Key is empty' });
+  if (!api.baseUrl) {
+    send({ type: 'ping:error', requestId, message: 'Base URL is empty' });
+    return;
+  }
+  if (api.providerType === 'cloud' && !api.apiKey) {
+    send({ type: 'ping:error', requestId, message: 'API Key is empty' });
     return;
   }
 
@@ -177,12 +182,13 @@ async function handlePing(requestId: string, client: StorageClient): Promise<voi
   const startedAt = Date.now();
 
   try {
+    const headers: Record<string, string> = { ...api.customHeaders };
+    if (api.apiKey) {
+      headers['Authorization'] = `Bearer ${api.apiKey}`;
+    }
     const response = await fetch(endpoint, {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${api.apiKey}`,
-        ...api.customHeaders,
-      },
+      headers,
       signal: ctl.signal,
     });
     clearTimeout(timeout);
