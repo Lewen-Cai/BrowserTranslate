@@ -44,9 +44,9 @@ Chrome Web Store 上架中。
 
 1. 点扩展图标，popup 即是快速配置面板。
 2. 选择**服务类型**：
-   - **云服务**——选供应商预设（OpenAI / DeepSeek 会自动填好 Base URL），或选 **Custom** 自填任意 OpenAI 兼容的 Base URL，然后填 **API Key** 和 **Model**。
-   - **本地**——填本地 **Base URL**（例如 `http://localhost:11434/v1`）和 **Model**，无需 API Key。
-3. 点 **Save config** 保存生效。状态指示灯会在 popup 打开和保存后自动 ping —— 绿色表示端点和模型可用。
+   - **云服务**——选供应商预设（OpenAI / DeepSeek 会自动填好 Base URL），或选 **自定义** 自填任意 OpenAI 兼容的 Base URL，然后填 **API Key** 和 **模型**。
+   - **本地**——填本地 **Base URL**（例如 `http://localhost:11434/v1`）和 **模型**，无需 API Key。
+3. 点 **保存配置** 保存生效。状态指示灯会在 popup 打开和保存后自动 ping —— 绿色表示端点和模型可用。
 4. 在任意网页选中文字 → 点蓝色图标（或按 **Alt+T**）→ 看到译文。
 
 高级设置（Prompt 模板、历史记录、主题、界面语言）在完整设置页里 —— 通过 popup 右上角的 ⚙ 图标进入。
