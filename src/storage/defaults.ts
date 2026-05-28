@@ -9,6 +9,8 @@ export function createDefaultAppData(): AppData {
       apiKey: '',
       model: '',
       promptTemplateId: 'builtin-general',
+      providerType: 'cloud',
+      cloudProvider: 'custom',
     },
     settings: {
       targetLanguage: 'zh-CN',

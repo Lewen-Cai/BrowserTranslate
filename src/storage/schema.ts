@@ -14,6 +14,8 @@ export interface ApiSettings {
   maxTokens?: number;
   promptTemplateId: string;
   customHeaders?: Record<string, string>;
+  providerType: 'cloud' | 'local';
+  cloudProvider: 'openai' | 'deepseek' | 'custom';
 }
 
 export interface GlobalSettings {
