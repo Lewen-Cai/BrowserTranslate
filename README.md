@@ -24,6 +24,7 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - Selection-based translation with floating icon (or hotkey-only mode)
 - Streaming output via Server-Sent Events
 - Cloud / Local provider modes — pick a preset (OpenAI, DeepSeek) or enter a custom OpenAI-compatible endpoint; local servers need no API key
+- Remembers each provider's key + model — switching providers restores them, no re-typing
 - 4 built-in prompt templates + unlimited custom templates
 - Auto status check on popup open (pings endpoint and model availability)
 - Translation cache (configurable TTL)
@@ -47,7 +48,7 @@ Chrome Web Store listing pending.
 2. Choose a **provider type**:
    - **Cloud** — pick a provider preset (OpenAI / DeepSeek auto-fills the Base URL) or **Custom** to enter any OpenAI-compatible Base URL, then fill **API Key** and **Model**.
    - **Local** — enter your local **Base URL** (e.g. `http://localhost:11434/v1`) and **Model**. No API key needed.
-3. Click **Save config** to apply. The status indicator auto-pings on popup open and after Save — green means endpoint and model are reachable.
+3. Click **Apply config** to apply. The status indicator auto-pings on popup open and after Apply — green means endpoint and model are reachable.
 4. Select text on any webpage → click the blue icon (or press **Alt+T**) → see the translation.
 
 Advanced settings (prompt templates, history, theme, UI language) live in the full settings page — accessible via the ⚙ icon at the top-right of the popup.
