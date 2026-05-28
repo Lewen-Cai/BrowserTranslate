@@ -38,8 +38,12 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Apparatus color tokens */
+:root, :host {
+  /* Apparatus color tokens.
+     :host is required so the in-page TranslationCard (rendered inside a
+     Shadow DOM) gets the light defaults — :root does not match inside a
+     shadow tree, only :host does. Dark mode works via the .dark class
+     toggled on #bt-root, which overrides these inherited values. */
   --ap-bg:        252 252 250;  /* #FCFCFA — paper white */
   --ap-surface:   255 255 255;  /* pure white for cards on bg */
   --ap-fg:        24 24 27;     /* #18181B — charcoal */
@@ -125,4 +129,87 @@ html, body {
 }
 *::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+/* TranslationCard — Shadow DOM component, uses ap-* vars so .dark
+   propagated to #bt-root flips the palette automatically. */
+.bt-card {
+  background: rgb(var(--ap-bg));
+  border: 1px solid rgb(var(--ap-border));
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.04), 0 8px 24px -8px rgb(0 0 0 / 0.12);
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  color: rgb(var(--ap-fg));
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bt-card-header {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid rgb(var(--ap-border));
+}
+.bt-card-strip {
+  width: 3px;
+  background: rgb(var(--ap-brand));
+}
+.bt-card-header-content {
+  flex: 1;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bt-card-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.bt-card-mono-label {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--ap-fg-muted));
+}
+.bt-card-brand-mark {
+  font-size: 11px;
+  color: rgb(var(--ap-fg-muted));
+}
+.bt-card-close {
+  background: transparent;
+  border: none;
+  color: rgb(var(--ap-fg-muted));
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+}
+.bt-card-close:hover { color: rgb(var(--ap-fg)); }
+.bt-card-body {
+  padding: 12px 14px;
+}
+.bt-card-text {
+  white-space: pre-wrap;
+  line-height: 1.55;
+  min-height: 1.55em;
+  font-size: 13px;
+}
+.bt-card-loading {
+  color: rgb(var(--ap-fg-subtle));
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+}
+.bt-card-error {
+  color: rgb(var(--ap-danger));
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.bt-card-error-icon {
+  margin-top: 3px;
+  flex-shrink: 0;
 }
