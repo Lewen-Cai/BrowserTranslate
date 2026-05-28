@@ -7,6 +7,7 @@ export interface MountedShadow {
   root: ShadowRoot;
   unmount: () => void;
   render: (node: ComponentChild) => void;
+  setTheme: (isDark: boolean) => void;
 }
 
 export function createShadowMount(): MountedShadow {
@@ -32,5 +33,9 @@ export function createShadowMount(): MountedShadow {
     root,
     unmount: () => render(null, container),
     render: (node: ComponentChild) => render(node, container),
+    setTheme: (isDark: boolean) => {
+      if (isDark) container.classList.add('dark');
+      else container.classList.remove('dark');
+    },
   };
 }
