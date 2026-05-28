@@ -16,6 +16,17 @@ export interface ApiSettings {
   customHeaders?: Record<string, string>;
   providerType: 'cloud' | 'local';
   cloudProvider: 'openai' | 'deepseek' | 'custom';
+  savedConfigs?: Partial<Record<ProviderSlot, ProviderConfig>>;
+}
+
+/** Identity of a remembered config bucket. */
+export type ProviderSlot = ApiSettings['cloudProvider'] | 'local';
+
+/** The remembered config for one provider slot. */
+export interface ProviderConfig {
+  baseUrl: string;
+  apiKey: string;
+  model: string;
 }
 
 export interface GlobalSettings {
