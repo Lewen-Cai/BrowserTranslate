@@ -89,19 +89,12 @@ export function TranslationCard({ text, rect, onClose }: Props) {
 
   return (
     <div
+      class="bt-card"
       style={{
         position: 'absolute',
         top: `${cardTop}px`,
         left: `${cardLeft}px`,
         width: `${CARD_WIDTH}px`,
-        background: 'rgb(252 252 250)',
-        border: '1px solid rgb(228 228 231)',
-        boxShadow: '0 1px 0 rgb(0 0 0 / 0.04), 0 8px 24px -8px rgb(0 0 0 / 0.12)',
-        fontFamily: '"Geist", ui-sans-serif, system-ui, sans-serif',
-        fontSize: '13px',
-        color: 'rgb(24 24 27)',
-        overflow: 'hidden',
-        borderRadius: '6px',
         transformOrigin: 'top right',
         transform: visible ? 'scale(1)' : 'scale(0.88)',
         opacity: visible ? 1 : 0,
@@ -109,29 +102,28 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         willChange: 'transform, opacity',
       }}
     >
-      {/* Header strip */}
-      <div style={{ display: 'flex', alignItems: 'stretch', borderBottom: '1px solid rgb(228 228 231)' }}>
-        <div style={{ width: '3px', background: '#2563EB' }} />
-        <div style={{ flex: 1, padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontFamily: '"Geist Mono", ui-monospace, monospace', fontSize: '10px', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgb(113 113 122)' }}>TRANSLATION</span>
-            <span style={{ fontSize: '11px', color: 'rgb(113 113 122)' }}>BrowserTranslate</span>
+      <div class="bt-card-header">
+        <div class="bt-card-strip" />
+        <div class="bt-card-header-content">
+          <div class="bt-card-title-row">
+            <span class="bt-card-mono-label">TRANSLATION</span>
+            <span class="bt-card-brand-mark">BrowserTranslate</span>
           </div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgb(113 113 122)', cursor: 'pointer', padding: 0, display: 'flex' }}>
+          <button onClick={onClose} class="bt-card-close" aria-label="Close">
             <X size={12} />
           </button>
         </div>
       </div>
-      <div style={{ padding: '12px 14px' }}>
+      <div class="bt-card-body">
         {error ? (
-          <div style={{ color: 'rgb(220 38 38)', display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: '12px', lineHeight: 1.5 }}>
-            <AlertCircle size={12} style={{ marginTop: 3, flexShrink: 0 }} />
+          <div class="bt-card-error">
+            <AlertCircle size={12} class="bt-card-error-icon" />
             <span>{error}</span>
           </div>
         ) : (
-          <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.55, minHeight: '1.55em', fontSize: '13px' }}>
+          <div class="bt-card-text">
             {translated || (streaming && (
-              <span style={{ color: 'rgb(161 161 170)', display: 'inline-flex', alignItems: 'center', gap: 4, fontFamily: '"Geist Mono", monospace', fontSize: '11px' }}>
+              <span class="bt-card-loading">
                 <Loader2 size={11} class="animate-spin" /> TRANSLATING
               </span>
             ))}
