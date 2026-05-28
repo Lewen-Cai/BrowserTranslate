@@ -5,6 +5,8 @@ import { createHotkeyWatcher, type HotkeyWatcher } from './content/hotkeyWatcher
 import { TriggerIcon } from './content/TriggerIcon';
 import { TranslationCard } from './content/TranslationCard';
 import { StorageClient } from '~/storage/client';
+import { resolveEffectiveTheme } from '~/ui/themeResolver';
+import type { GlobalSettings } from '~/storage/schema';
 
 export default defineContentScript({
   matches: ['<all_urls>'],
@@ -12,6 +14,14 @@ export default defineContentScript({
   async main() {
     const mount = createShadowMount();
     const client = new StorageClient();
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    let themeSetting: GlobalSettings['theme'] = 'auto';
+
+    const applyTheme = () => {
+      mount.setTheme(resolveEffectiveTheme(themeSetting, mql.matches));
+    };
+
+    mql.addEventListener('change', applyTheme);
 
     let state: 'idle' | 'icon' | 'card' = 'idle';
     let selectionWatcher: { stop: () => void } | null = null;
@@ -55,6 +65,8 @@ export default defineContentScript({
       if (state !== 'idle') hide();
 
       const data = await client.loadAppData();
+      themeSetting = data.settings.theme;
+      applyTheme();
 
       if (data.settings.triggerMode === 'icon') {
         const w = createSelectionWatcher((info) => {
