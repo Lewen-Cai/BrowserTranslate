@@ -14,16 +14,13 @@ export const STRINGS = {
   settings: { en: 'Settings', 'zh-CN': '设置' },
   openFullSettings: { en: 'Open full settings', 'zh-CN': '打开完整设置' },
   privacyTagline: { en: 'Open-source · BYOK · Zero relay · Zero telemetry', 'zh-CN': '开源 · 自带 Key · 零中转 · 零遥测' },
-  status: { en: 'Status', 'zh-CN': '状态' },
   ready: { en: 'Ready', 'zh-CN': '已就绪' },
   notConfigured: { en: 'Not configured', 'zh-CN': '尚未配置' },
-  translating: { en: 'Translating', 'zh-CN': '翻译中' },
   // Sections
   sectionApi: { en: 'API', 'zh-CN': 'API' },
   sectionTranslation: { en: 'Translation', 'zh-CN': '翻译' },
   sectionRecent: { en: 'Recent', 'zh-CN': '最近翻译' },
   sectionApiEndpoint: { en: 'API Endpoint', 'zh-CN': '接口地址' },
-  sectionGeneration: { en: 'Generation', 'zh-CN': '生成参数' },
   sectionCacheHistory: { en: 'Cache & History', 'zh-CN': '缓存与历史' },
   sectionAppearance: { en: 'Appearance', 'zh-CN': '外观' },
   sectionPromptTemplates: { en: 'Prompt Templates', 'zh-CN': '提示词模板' },
@@ -34,14 +31,23 @@ export const STRINGS = {
   navPrompts: { en: 'PROMPTS', 'zh-CN': '提示词' },
   navGeneral: { en: 'GENERAL', 'zh-CN': '通用' },
   navHistory: { en: 'HISTORY', 'zh-CN': '历史' },
+  // Provider type + presets
+  providerType: { en: 'Provider type', 'zh-CN': '服务类型' },
+  providerTypeCloud: { en: 'Cloud', 'zh-CN': '云服务' },
+  providerTypeLocal: { en: 'Local', 'zh-CN': '本地' },
+  cloudProvider: { en: 'Provider', 'zh-CN': '供应商' },
+  cloudProviderCustom: { en: 'Custom', 'zh-CN': '自定义' },
+  saveConfig: { en: 'Save config', 'zh-CN': '保存配置' },
+  // Status states
+  statusChecking: { en: 'Checking…', 'zh-CN': '检测中…' },
+  statusModelMissing: { en: 'Model not found', 'zh-CN': '模型未找到' },
+  statusOffline: { en: 'Offline', 'zh-CN': '离线' },
   // API form
   baseUrl: { en: 'Base URL', 'zh-CN': 'Base URL' },
   apiKey: { en: 'API Key', 'zh-CN': 'API Key' },
   model: { en: 'Model', 'zh-CN': '模型' },
-  temperature: { en: 'Temperature', 'zh-CN': '温度' },
   defaultPromptTemplate: { en: 'Default prompt template', 'zh-CN': '默认提示词模板' },
   prompt: { en: 'Prompt', 'zh-CN': '提示词' },
-  temperatureHint: { en: 'Higher = more creative; lower = more literal. 0.3 is a good default.', 'zh-CN': '数值越高越自由发挥，越低越忠于原文。0.3 适合大多数场景。' },
   // Translation form
   targetLanguage: { en: 'Target language', 'zh-CN': '目标语言' },
   triggerMode: { en: 'Trigger mode', 'zh-CN': '触发方式' },
@@ -82,17 +88,6 @@ export const STRINGS = {
   searchHistory: { en: 'Search source or translation...', 'zh-CN': '搜索原文或译文…' },
   noEntries: { en: 'No entries', 'zh-CN': '暂无记录' },
   noEntriesHint: { en: 'Translations you make will appear here.', 'zh-CN': '做过的翻译会显示在这里' },
-  // Connection test
-  testConnection: { en: 'Test connection', 'zh-CN': '测试连接' },
-  testing: { en: 'Testing…', 'zh-CN': '测试中…' },
-  testConnected: { en: 'Connected', 'zh-CN': '连接成功' },
-  testFailed: { en: 'Connection failed', 'zh-CN': '连接失败' },
-  testModelsFound: { en: 'models', 'zh-CN': '个模型' },
-  modelNotInList: {
-    en: "Reached, but model '{model}' isn't in the available list",
-    'zh-CN': "已连通，但「{model}」不在可用模型列表中",
-  },
-  availableModels: { en: 'Available', 'zh-CN': '可用模型' },
   // Errors
   noProfileError: { en: 'API not configured. Open settings to add your key.', 'zh-CN': '尚未配置 API，请到设置中填入 Key。' },
 };
