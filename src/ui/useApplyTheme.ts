@@ -1,5 +1,6 @@
 import { useEffect } from 'preact/hooks';
 import { useAppStore } from '~/storage/store';
+import { resolveEffectiveTheme } from './themeResolver';
 
 /**
  * Watches settings.theme and toggles the `dark` class on <html>.
@@ -16,19 +17,12 @@ export function useApplyTheme(): void {
       else root.classList.remove('dark');
     };
 
-    if (theme === 'dark') {
-      apply(true);
-      return;
-    }
-    if (theme === 'light') {
-      apply(false);
-      return;
-    }
-
-    // 'auto' — follow system, watch for changes
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
-    apply(mql.matches);
-    const onChange = (e: MediaQueryListEvent) => apply(e.matches);
+    apply(resolveEffectiveTheme(theme, mql.matches));
+
+    if (theme !== 'auto') return;
+
+    const onChange = (e: MediaQueryListEvent) => apply(resolveEffectiveTheme('auto', e.matches));
     mql.addEventListener('change', onChange);
     return () => {
       mql.removeEventListener('change', onChange);
