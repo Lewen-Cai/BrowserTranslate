@@ -1,5 +1,6 @@
 import { APP_DATA_VERSION, type AppData } from './schema';
 import { BUILTIN_TEMPLATES } from '~/core/prompt/builtin';
+import { inferCloudProvider } from '~/core/providers/presets';
 
 /**
  * Integrity repairs applied to AppData on every load.
@@ -13,7 +14,29 @@ export function migrateAppData(input: AppData): AppData {
   let data = input;
   data = ensureBuiltinTemplates(data);
   data = repairOrphanedApiTemplateRef(data);
+  data = fillApiProviderDefaults(data);
   return data;
+}
+
+function fillApiProviderDefaults(data: AppData): AppData {
+  const api = data.api;
+  const providerTypeValid = api.providerType === 'cloud' || api.providerType === 'local';
+  const cloudProviderValid =
+    api.cloudProvider === 'openai' ||
+    api.cloudProvider === 'deepseek' ||
+    api.cloudProvider === 'custom';
+  if (providerTypeValid && cloudProviderValid) return data;
+  return {
+    ...data,
+    api: {
+      ...api,
+      providerType: api.providerType === 'local' ? 'local' : 'cloud',
+      cloudProvider:
+        api.cloudProvider === 'openai' || api.cloudProvider === 'deepseek' || api.cloudProvider === 'custom'
+          ? api.cloudProvider
+          : inferCloudProvider(api.baseUrl),
+    },
+  };
 }
 
 function ensureBuiltinTemplates(data: AppData): AppData {
