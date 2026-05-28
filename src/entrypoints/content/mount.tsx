@@ -15,7 +15,11 @@ export function createShadowMount(): MountedShadow {
   if (!host) {
     host = document.createElement('div');
     host.id = HOST_ID;
-    host.style.cssText = 'all:initial;position:fixed;top:0;left:0;z-index:2147483647;';
+    // position:absolute (not fixed) anchors the host to the document origin so it
+    // scrolls with the page — matching the document-space coordinates that
+    // computeIconPosition / TranslationCard produce (they add scrollX/scrollY).
+    // With fixed, a scrolled page renders the icon/card scrollY px off-screen.
+    host.style.cssText = 'all:initial;position:absolute;top:0;left:0;z-index:2147483647;';
     document.documentElement.appendChild(host);
   }
   let root = host.shadowRoot;
