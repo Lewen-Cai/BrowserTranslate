@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { migrateAppData } from './migrations';
 import { APP_DATA_VERSION } from './schema';
-import type { AppData } from './schema';
+import type { AppData, ApiSettings } from './schema';
 import { BUILTIN_TEMPLATES } from '~/core/prompt/builtin';
+import { createDefaultAppData } from './defaults';
 
 const baseSettings = {
   targetLanguage: 'en',
@@ -26,6 +27,7 @@ describe('migrateAppData', () => {
         promptTemplateId: 'builtin-general',
         providerType: 'cloud',
         cloudProvider: 'custom',
+        savedConfigs: { custom: { baseUrl: 'http://x', apiKey: 'k', model: 'm' } },
       },
       settings: baseSettings,
       promptTemplates: BUILTIN_TEMPLATES.map((t) => ({ ...t })),
@@ -101,5 +103,33 @@ describe('migrateAppData', () => {
     const out = migrateAppData(input);
     expect(out.api.providerType).toBe('cloud');
     expect(out.api.cloudProvider).toBe('openai');
+  });
+});
+
+describe('savedConfigs seeding', () => {
+  it('seeds the active slot from the active fields when missing', () => {
+    const data = createDefaultAppData();
+    data.api = { ...data.api, providerType: 'cloud', cloudProvider: 'openai', baseUrl: 'https://api.openai.com/v1', apiKey: 'sk-x', model: 'gpt-4o' };
+    delete data.api.savedConfigs;
+    const out = migrateAppData(data);
+    expect(out.api.savedConfigs).toEqual({ openai: { baseUrl: 'https://api.openai.com/v1', apiKey: 'sk-x', model: 'gpt-4o' } });
+  });
+
+  it('leaves a valid savedConfigs untouched', () => {
+    const data = createDefaultAppData();
+    data.api = { ...data.api, providerType: 'cloud', cloudProvider: 'openai', baseUrl: 'b', apiKey: 'k', model: 'm', savedConfigs: { openai: { baseUrl: 'b', apiKey: 'k', model: 'm' } } };
+    const out = migrateAppData(data);
+    expect(out.api.savedConfigs).toEqual({ openai: { baseUrl: 'b', apiKey: 'k', model: 'm' } });
+  });
+
+  it('drops malformed entries and keeps the active slot', () => {
+    const data = createDefaultAppData();
+    data.api = {
+      ...data.api,
+      providerType: 'cloud', cloudProvider: 'openai', baseUrl: 'b', apiKey: 'k', model: 'm',
+      savedConfigs: { openai: { baseUrl: 'b', apiKey: 'k', model: 'm' }, deepseek: { baseUrl: 123 } } as unknown as ApiSettings['savedConfigs'],
+    };
+    const out = migrateAppData(data);
+    expect(out.api.savedConfigs).toEqual({ openai: { baseUrl: 'b', apiKey: 'k', model: 'm' } });
   });
 });

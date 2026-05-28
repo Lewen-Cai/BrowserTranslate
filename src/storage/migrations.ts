@@ -1,6 +1,8 @@
 import { APP_DATA_VERSION, type AppData } from './schema';
+import type { ProviderConfig, ProviderSlot } from './schema';
 import { BUILTIN_TEMPLATES } from '~/core/prompt/builtin';
 import { inferCloudProvider } from '~/core/providers/presets';
+import { activeSlot } from '~/core/providers/providerSlots';
 
 /**
  * Integrity repairs applied to AppData on every load.
@@ -15,6 +17,7 @@ export function migrateAppData(input: AppData): AppData {
   data = ensureBuiltinTemplates(data);
   data = repairOrphanedApiTemplateRef(data);
   data = fillApiProviderDefaults(data);
+  data = seedSavedConfigs(data);
   return data;
 }
 
@@ -53,4 +56,21 @@ function repairOrphanedApiTemplateRef(data: AppData): AppData {
   const validIds = new Set(data.promptTemplates.map((t) => t.id));
   if (validIds.has(data.api.promptTemplateId)) return data;
   return { ...data, api: { ...data.api, promptTemplateId: 'builtin-general' } };
+}
+
+function seedSavedConfigs(data: AppData): AppData {
+  const api = data.api;
+  const raw = api.savedConfigs && typeof api.savedConfigs === 'object' ? api.savedConfigs : {};
+  const clean: Partial<Record<ProviderSlot, ProviderConfig>> = {};
+  for (const [slot, cfg] of Object.entries(raw)) {
+    if (cfg && typeof cfg.baseUrl === 'string' && typeof cfg.apiKey === 'string' && typeof cfg.model === 'string') {
+      clean[slot as ProviderSlot] = { baseUrl: cfg.baseUrl, apiKey: cfg.apiKey, model: cfg.model };
+    }
+  }
+  const slot = activeSlot(api);
+  if (!(slot in clean)) {
+    clean[slot] = { baseUrl: api.baseUrl, apiKey: api.apiKey, model: api.model };
+  }
+  if (JSON.stringify(api.savedConfigs ?? null) === JSON.stringify(clean)) return data;
+  return { ...data, api: { ...api, savedConfigs: clean } };
 }
