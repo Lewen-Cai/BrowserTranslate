@@ -10,6 +10,7 @@ import { Settings, Eye, EyeOff } from '~/ui/icons';
 import { useT } from '~/i18n';
 import { useApplyTheme } from '~/ui/useApplyTheme';
 import { CLOUD_PRESETS, type CloudProvider } from '~/core/providers/presets';
+import { applySlot, rememberActive } from '~/core/providers/providerSlots';
 import type { ApiSettings } from '~/storage/schema';
 
 const LANGUAGES = [
@@ -30,7 +31,8 @@ function apiEqual(a: ApiSettings, b: ApiSettings): boolean {
     a.model === b.model &&
     a.providerType === b.providerType &&
     a.cloudProvider === b.cloudProvider &&
-    a.promptTemplateId === b.promptTemplateId
+    a.promptTemplateId === b.promptTemplateId &&
+    JSON.stringify(a.savedConfigs ?? {}) === JSON.stringify(b.savedConfigs ?? {})
   );
 }
 
@@ -73,29 +75,16 @@ export function App() {
   }
 
   function onProviderTypeChange(next: 'cloud' | 'local') {
-    setDraft((d) => {
-      // Switching mode is a fresh slate: cloud and local use different
-      // endpoints, keys, and model names, so don't carry stale values over.
-      if (next === 'local') {
-        return { ...d, providerType: 'local', baseUrl: '', apiKey: '', model: '' };
-      }
-      const baseUrl = d.cloudProvider === 'custom' ? '' : CLOUD_PRESETS[d.cloudProvider].baseUrl;
-      return { ...d, providerType: 'cloud', baseUrl, apiKey: '', model: '' };
-    });
+    // Stash current (even unsaved) edits, then restore the target slot.
+    setDraft((d) => applySlot(rememberActive(d), next === 'local' ? 'local' : d.cloudProvider));
   }
 
   function onCloudProviderChange(next: CloudProvider) {
-    setDraft((d) => {
-      // Switching provider means reconfiguring for a different service:
-      // follow the preset baseUrl (or clear for custom) and reset the
-      // provider-specific key + model so stale credentials don't linger.
-      const baseUrl = next === 'custom' ? '' : CLOUD_PRESETS[next].baseUrl;
-      return { ...d, cloudProvider: next, baseUrl, apiKey: '', model: '' };
-    });
+    setDraft((d) => applySlot(rememberActive(d), next));
   }
 
-  async function onSave() {
-    await updateApi(draft);
+  async function onApply() {
+    await updateApi(rememberActive(draft));
     setPingNonce((n) => n + 1);
   }
 
@@ -209,7 +198,7 @@ export function App() {
           />
 
           <div class="pt-1">
-            <Button variant="primary" size="sm" onClick={onSave} disabled={!dirty}>
+            <Button variant="primary" size="sm" onClick={onApply} disabled={!dirty}>
               {t('applyConfig')}
             </Button>
           </div>
