@@ -22,7 +22,7 @@
 
 - 划词翻译（图标二段触发，或纯快捷键模式）
 - 流式输出（SSE）
-- 多轮追问（"解释这个术语"、"翻得直白一点"）
+- 云端 / 本地两种服务模式——选预设（OpenAI、DeepSeek）或自定义 OpenAI 兼容端点；本地服务无需 API Key
 - 4 个内置 Prompt 模板 + 无限自定义模板
 - 打开 popup 自动检测连接（ping 端点 + 模型有效性）
 - 翻译缓存（可配 TTL）
@@ -43,8 +43,10 @@ Chrome Web Store 上架中。
 ## 配置
 
 1. 点扩展图标，popup 即是快速配置面板。
-2. 填入 **Base URL**、**API Key** 和 **Model**（例如 `https://api.deepseek.com/v1` + 你的 key + `deepseek-chat`）。
-3. 字段旁的状态指示灯会在 popup 打开和保存后自动 ping —— 绿色表示端点和模型可用。
+2. 选择**服务类型**：
+   - **云服务**——选供应商预设（OpenAI / DeepSeek 会自动填好 Base URL），或选 **Custom** 自填任意 OpenAI 兼容的 Base URL，然后填 **API Key** 和 **Model**。
+   - **本地**——填本地 **Base URL**（例如 `http://localhost:11434/v1`）和 **Model**，无需 API Key。
+3. 点 **Save config** 保存生效。状态指示灯会在 popup 打开和保存后自动 ping —— 绿色表示端点和模型可用。
 4. 在任意网页选中文字 → 点蓝色图标（或按 **Alt+T**）→ 看到译文。
 
 高级设置（Prompt 模板、历史记录、主题、界面语言）在完整设置页里 —— 通过 popup 右上角的 ⚙ 图标进入。
