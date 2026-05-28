@@ -20,6 +20,7 @@ export function Input({ label, error, hint, mono, class: cls, className, ...rest
           'placeholder:text-ap-subtle',
           'focus:border-ap-brand focus:outline-none transition-colors',
           error && 'border-ap-danger',
+          'disabled:bg-ap-bg disabled:text-ap-muted disabled:cursor-not-allowed',
           mono && 'font-mono',
           cls as string, className as string,
         )}

@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { useAppStore } from '~/storage/store';
 import { Input } from '~/ui/components/Input';
 import { Select } from '~/ui/components/Select';
 import { SectionHeader } from '~/ui/components/SectionHeader';
-import { TestConnectionButton } from '~/ui/components/TestConnectionButton';
+import { SegmentedControl } from '~/ui/components/SegmentedControl';
+import { ApiStatusIndicator } from '~/ui/components/ApiStatusIndicator';
+import { Button } from '~/ui/components/Button';
 import { Settings, Eye, EyeOff } from '~/ui/icons';
 import { useT } from '~/i18n';
 import { useApplyTheme } from '~/ui/useApplyTheme';
+import { CLOUD_PRESETS, type CloudProvider } from '~/core/providers/presets';
+import type { ApiSettings } from '~/storage/schema';
 
 const LANGUAGES = [
   { value: 'zh-CN', label: '简体中文' },
@@ -18,6 +22,17 @@ const LANGUAGES = [
   { value: 'fr', label: 'Français' },
   { value: 'de', label: 'Deutsch' },
 ];
+
+function apiEqual(a: ApiSettings, b: ApiSettings): boolean {
+  return (
+    a.baseUrl === b.baseUrl &&
+    a.apiKey === b.apiKey &&
+    a.model === b.model &&
+    a.providerType === b.providerType &&
+    a.cloudProvider === b.cloudProvider &&
+    a.promptTemplateId === b.promptTemplateId
+  );
+}
 
 export function App() {
   const load = useAppStore((s) => s.load);
@@ -31,8 +46,16 @@ export function App() {
   useApplyTheme();
 
   const [showKey, setShowKey] = useState(false);
+  const [draft, setDraft] = useState<ApiSettings>(api);
+  const [pingNonce, setPingNonce] = useState(0);
 
+  // Initial load
   useEffect(() => { void load(); }, [load]);
+
+  // Sync draft whenever the underlying api object changes (e.g. on first load).
+  useEffect(() => {
+    setDraft(api);
+  }, [api]);
 
   function openOptions() { chrome.runtime.openOptionsPage(); window.close(); }
 
@@ -40,7 +63,46 @@ export function App() {
     return <div class="p-4 text-2xs font-mono text-ap-subtle">{t('loading').toUpperCase()}</div>;
   }
 
-  const apiConfigured = !!(api.baseUrl && api.apiKey && api.model);
+  const dirty = !apiEqual(draft, api);
+  const cloudProvider = draft.cloudProvider;
+  const isCloud = draft.providerType === 'cloud';
+  const baseUrlLocked = isCloud && cloudProvider !== 'custom';
+
+  function setDraftField<K extends keyof ApiSettings>(key: K, value: ApiSettings[K]) {
+    setDraft((d) => ({ ...d, [key]: value }));
+  }
+
+  function onProviderTypeChange(next: 'cloud' | 'local') {
+    setDraft((d) => {
+      // Switching mode is a fresh slate: cloud and local use different
+      // endpoints, keys, and model names, so don't carry stale values over.
+      if (next === 'local') {
+        return { ...d, providerType: 'local', baseUrl: '', apiKey: '', model: '' };
+      }
+      const baseUrl = d.cloudProvider === 'custom' ? '' : CLOUD_PRESETS[d.cloudProvider].baseUrl;
+      return { ...d, providerType: 'cloud', baseUrl, apiKey: '', model: '' };
+    });
+  }
+
+  function onCloudProviderChange(next: CloudProvider) {
+    setDraft((d) => {
+      // Switching provider means reconfiguring for a different service:
+      // follow the preset baseUrl (or clear for custom) and reset the
+      // provider-specific key + model so stale credentials don't linger.
+      const baseUrl = next === 'custom' ? '' : CLOUD_PRESETS[next].baseUrl;
+      return { ...d, cloudProvider: next, baseUrl, apiKey: '', model: '' };
+    });
+  }
+
+  async function onSave() {
+    await updateApi(draft);
+    setPingNonce((n) => n + 1);
+  }
+
+  // The status indicator should not waste a ping during initial load — only
+  // ping once the saved api state has the required fields. The indicator
+  // itself handles further triggering via pingNonce.
+  const initiallySkip = useMemo(() => pingNonce === 0 && !apiHasRequired(api), [pingNonce, api]);
 
   return (
     <div class="bg-ap-bg text-ap-fg">
@@ -52,7 +114,7 @@ export function App() {
           <div class="flex-1 px-4 py-3 flex items-center justify-between">
             <div>
               <div class="font-mono text-2xs text-ap-subtle tracking-wider">BROWSERTRANSLATE</div>
-              <div class="font-semibold text-sm">v0.1.0</div>
+              <div class="font-semibold text-sm">v0.1.1</div>
             </div>
             <button
               onClick={openOptions}
@@ -68,11 +130,8 @@ export function App() {
 
       {/* Status strip */}
       <div class="px-4 py-2 flex items-center gap-2 border-b border-ap-border bg-ap-surface">
-        <span class={`w-1.5 h-1.5 rounded-full ${apiConfigured ? 'bg-ap-success' : 'bg-ap-danger'}`} />
-        <span class="text-2xs font-mono uppercase tracking-wider text-ap-muted">
-          {apiConfigured ? t('ready').toUpperCase() : t('notConfigured').toUpperCase()}
-        </span>
-        {apiConfigured && (
+        <ApiStatusIndicator pingNonce={pingNonce} skip={initiallySkip} />
+        {api.model && (
           <span class="ml-auto text-2xs font-mono text-ap-subtle truncate max-w-[160px]">
             {api.model}
           </span>
@@ -83,46 +142,76 @@ export function App() {
       <section class="px-4 pt-3 pb-3 border-b border-ap-border">
         <SectionHeader number="01" label={t('sectionApi').toUpperCase()} />
         <div class="space-y-2.5">
+          <SegmentedControl<'cloud' | 'local'>
+            label={t('providerType')}
+            value={draft.providerType}
+            fullWidth
+            options={[
+              { value: 'cloud', label: t('providerTypeCloud') },
+              { value: 'local', label: t('providerTypeLocal') },
+            ]}
+            onChange={onProviderTypeChange}
+          />
+
+          {isCloud && (
+            <Select
+              label={t('cloudProvider')}
+              value={draft.cloudProvider}
+              options={(Object.keys(CLOUD_PRESETS) as CloudProvider[]).map((k) => ({
+                value: k,
+                label: k === 'custom' ? t('cloudProviderCustom') : CLOUD_PRESETS[k].label,
+              }))}
+              onChange={(e) => onCloudProviderChange((e.target as HTMLSelectElement).value as CloudProvider)}
+            />
+          )}
+
           <Input
             label={t('baseUrl')}
-            value={api.baseUrl}
-            placeholder="https://api.openai.com/v1"
+            value={draft.baseUrl}
+            disabled={baseUrlLocked}
             mono
-            onInput={(e) => updateApi({ baseUrl: (e.target as HTMLInputElement).value })}
+            onInput={(e) => setDraftField('baseUrl', (e.target as HTMLInputElement).value)}
           />
-          <div class="flex gap-2 items-end">
-            <div class="flex-1">
-              <Input
-                label={t('apiKey')}
-                type={showKey ? 'text' : 'password'}
-                value={api.apiKey}
-                placeholder="sk-..."
-                mono
-                onInput={(e) => updateApi({ apiKey: (e.target as HTMLInputElement).value })}
-              />
+
+          {isCloud && (
+            <div class="flex gap-2 items-end">
+              <div class="flex-1">
+                <Input
+                  label={t('apiKey')}
+                  type={showKey ? 'text' : 'password'}
+                  value={draft.apiKey}
+                  mono
+                  onInput={(e) => setDraftField('apiKey', (e.target as HTMLInputElement).value)}
+                />
+              </div>
+              <button
+                onClick={() => setShowKey((s) => !s)}
+                class="h-8 w-8 flex items-center justify-center rounded-md border border-ap-border bg-ap-surface text-ap-muted hover:text-ap-fg hover:border-ap-border-strong transition-colors"
+                aria-label={showKey ? 'Hide key' : 'Show key'}
+              >
+                {showKey ? <EyeOff size={12} /> : <Eye size={12} />}
+              </button>
             </div>
-            <button
-              onClick={() => setShowKey((s) => !s)}
-              class="h-8 w-8 flex items-center justify-center rounded-md border border-ap-border bg-ap-surface text-ap-muted hover:text-ap-fg hover:border-ap-border-strong transition-colors"
-            >
-              {showKey ? <EyeOff size={12} /> : <Eye size={12} />}
-            </button>
-          </div>
+          )}
+
           <Input
             label={t('model')}
-            value={api.model}
-            placeholder="gpt-4o-mini"
+            value={draft.model}
             mono
-            onInput={(e) => updateApi({ model: (e.target as HTMLInputElement).value })}
+            onInput={(e) => setDraftField('model', (e.target as HTMLInputElement).value)}
           />
+
           <Select
             label={t('prompt')}
-            value={api.promptTemplateId}
+            value={draft.promptTemplateId}
             options={templates.map((tmpl) => ({ value: tmpl.id, label: tmpl.name }))}
-            onChange={(e) => updateApi({ promptTemplateId: (e.target as HTMLSelectElement).value })}
+            onChange={(e) => setDraftField('promptTemplateId', (e.target as HTMLSelectElement).value)}
           />
+
           <div class="pt-1">
-            <TestConnectionButton />
+            <Button variant="primary" size="sm" onClick={onSave} disabled={!dirty}>
+              {t('saveConfig')}
+            </Button>
           </div>
         </div>
       </section>
@@ -149,7 +238,6 @@ export function App() {
           <Input
             label={t('hotkey')}
             value={settings.hotkey}
-            placeholder="Alt+T"
             mono
             onInput={(e) => updateSettings({ hotkey: (e.target as HTMLInputElement).value })}
           />
@@ -157,4 +245,10 @@ export function App() {
       </section>
     </div>
   );
+}
+
+function apiHasRequired(api: ApiSettings): boolean {
+  if (!api.baseUrl || !api.model) return false;
+  if (api.providerType === 'cloud' && !api.apiKey) return false;
+  return true;
 }
