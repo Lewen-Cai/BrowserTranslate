@@ -37,7 +37,7 @@ export const STRINGS = {
   providerTypeLocal: { en: 'Local', 'zh-CN': '本地' },
   cloudProvider: { en: 'Provider', 'zh-CN': '供应商' },
   cloudProviderCustom: { en: 'Custom', 'zh-CN': '自定义' },
-  saveConfig: { en: 'Save config', 'zh-CN': '保存配置' },
+  applyConfig: { en: 'Apply config', 'zh-CN': '应用配置' },
   // Status states
   statusChecking: { en: 'Checking…', 'zh-CN': '检测中…' },
   statusModelMissing: { en: 'Model not found', 'zh-CN': '模型未找到' },

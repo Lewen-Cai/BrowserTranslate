@@ -210,7 +210,7 @@ export function App() {
 
           <div class="pt-1">
             <Button variant="primary" size="sm" onClick={onSave} disabled={!dirty}>
-              {t('saveConfig')}
+              {t('applyConfig')}
             </Button>
           </div>
         </div>
