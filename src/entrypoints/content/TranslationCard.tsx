@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'preact/hooks';
 import { X, AlertCircle, Loader2 } from '~/ui/icons';
 import { streamTranslate, abortTranslate } from '~/messaging/client';
 import { computeIconPosition, ICON_SIZE } from './TriggerIcon';
+import { computeCardVerticalLayout } from './cardLayout';
 
 interface Props {
   text: string;
@@ -72,9 +73,6 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   // icon was. Visually the card then drops down-and-left from the icon.
   const iconPos = computeIconPosition(rect);
   const iconRight = iconPos.left + ICON_SIZE;
-  const iconBottom = iconPos.top + ICON_SIZE;
-
-  const cardTop = iconBottom + 2;
   let cardLeft = iconRight - CARD_WIDTH;
 
   // Clamp horizontally
@@ -83,9 +81,9 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   if (cardLeft < minLeft) cardLeft = minLeft;
   if (cardLeft > maxLeft) cardLeft = maxLeft;
 
-  // If we'd extend below viewport bottom on a tall card, flip above
-  // the selection instead — but only adjust top; final size unknown.
-  // (Skip in v1 — most pages have enough scroll room.)
+  // Vertical placement keeps the card inside the viewport and caps its height
+  // so a long translation scrolls inside the card (see cardLayout.ts).
+  const { top: cardTop, maxHeight } = computeCardVerticalLayout(rect);
 
   return (
     <div
@@ -95,6 +93,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         top: `${cardTop}px`,
         left: `${cardLeft}px`,
         width: `${CARD_WIDTH}px`,
+        maxHeight: `${maxHeight}px`,
         transformOrigin: 'top right',
         transform: visible ? 'scale(1)' : 'scale(0.88)',
         opacity: visible ? 1 : 0,

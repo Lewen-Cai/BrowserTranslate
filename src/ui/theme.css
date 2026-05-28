@@ -142,11 +142,14 @@ html, body {
   color: rgb(var(--ap-fg));
   border-radius: 6px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .bt-card-header {
   display: flex;
   align-items: stretch;
   border-bottom: 1px solid rgb(var(--ap-border));
+  flex-shrink: 0;
 }
 .bt-card-strip {
   width: 3px;
@@ -186,6 +189,8 @@ html, body {
 .bt-card-close:hover { color: rgb(var(--ap-fg)); }
 .bt-card-body {
   padding: 12px 14px;
+  overflow-y: auto;
+  min-height: 0;
 }
 .bt-card-text {
   white-space: pre-wrap;
