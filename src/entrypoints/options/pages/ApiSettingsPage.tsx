@@ -8,6 +8,7 @@ import { ApiStatusIndicator } from '~/ui/components/ApiStatusIndicator';
 import { Eye, EyeOff } from '~/ui/icons';
 import { useT } from '~/i18n';
 import { CLOUD_PRESETS, type CloudProvider } from '~/core/providers/presets';
+import { applySlot, rememberActive } from '~/core/providers/providerSlots';
 
 export function ApiSettingsPage() {
   const api = useAppStore((s) => s.data.api);
@@ -27,21 +28,11 @@ export function ApiSettingsPage() {
   const baseUrlLocked = isCloud && api.cloudProvider !== 'custom';
 
   function onProviderTypeChange(next: 'cloud' | 'local') {
-    // Switching mode is a fresh slate: cloud and local use different
-    // endpoints, keys, and model names, so don't carry stale values over.
-    if (next === 'local') {
-      updateApi({ providerType: 'local', baseUrl: '', apiKey: '', model: '' });
-    } else {
-      const baseUrl = api.cloudProvider === 'custom' ? '' : CLOUD_PRESETS[api.cloudProvider].baseUrl;
-      updateApi({ providerType: 'cloud', baseUrl, apiKey: '', model: '' });
-    }
+    updateApi(applySlot(rememberActive(api), next === 'local' ? 'local' : api.cloudProvider));
   }
 
   function onCloudProviderChange(next: CloudProvider) {
-    // Switching provider resets the provider-specific key + model and
-    // follows the preset baseUrl (or clears it for custom).
-    const baseUrl = next === 'custom' ? '' : CLOUD_PRESETS[next].baseUrl;
-    updateApi({ cloudProvider: next, baseUrl, apiKey: '', model: '' });
+    updateApi(applySlot(rememberActive(api), next));
   }
 
   return (
@@ -76,7 +67,7 @@ export function ApiSettingsPage() {
           disabled={baseUrlLocked}
           mono
           hint="OpenAI · DeepSeek · Moonshot · Groq · OpenRouter · Ollama"
-          onInput={(e) => updateApi({ baseUrl: (e.target as HTMLInputElement).value })}
+          onInput={(e) => updateApi(rememberActive({ ...api, baseUrl: (e.target as HTMLInputElement).value }))}
         />
 
         {isCloud && (
@@ -87,7 +78,7 @@ export function ApiSettingsPage() {
                 type={showKey ? 'text' : 'password'}
                 value={api.apiKey}
                 mono
-                onInput={(e) => updateApi({ apiKey: (e.target as HTMLInputElement).value })}
+                onInput={(e) => updateApi(rememberActive({ ...api, apiKey: (e.target as HTMLInputElement).value }))}
               />
             </div>
             <button
@@ -104,7 +95,7 @@ export function ApiSettingsPage() {
           label={t('model')}
           value={api.model}
           mono
-          onInput={(e) => updateApi({ model: (e.target as HTMLInputElement).value })}
+          onInput={(e) => updateApi(rememberActive({ ...api, model: (e.target as HTMLInputElement).value }))}
         />
 
         <div class="pt-1">
