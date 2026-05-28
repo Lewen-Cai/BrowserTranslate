@@ -13,10 +13,11 @@
 Existing translation extensions either lock LLM access behind paywalls, route your text through their servers, or hide the prompts that drive translation quality. BrowserTranslate is the opposite of all three.
 
 - **Bring your own key** — works with any OpenAI-compatible API: OpenAI, DeepSeek, Moonshot, Groq, SiliconFlow, OpenRouter, local Ollama, LM Studio, vLLM
+  - Need Anthropic or Gemini? Run any OpenAI-compatible proxy (LiteLLM, OpenRouter, etc.) and point Base URL at it.
 - **Zero relay** — your text goes directly from your browser to the provider you configured. We have no server.
 - **Zero telemetry** — no analytics, no error reporting, no remote logging
 - **Open prompts** — every translation prompt is editable. Tune for academic / casual / technical / your-own-style
-- **One-click connection test** — verify endpoint + model in the popup before translating
+- **Auto status check on popup open** — endpoint + model reachability is pinged automatically and shown as a status indicator
 
 ## Features
 
@@ -24,7 +25,7 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - Streaming output via Server-Sent Events
 - Multi-turn follow-up ("explain this term", "translate more literally")
 - 4 built-in prompt templates + unlimited custom templates
-- Built-in connection test (verifies endpoint and model availability)
+- Auto status check on popup open (pings endpoint and model availability)
 - Translation cache (configurable TTL)
 - Translation history with search
 - Light / dark theme (follows system)
@@ -44,7 +45,7 @@ Chrome Web Store listing pending.
 
 1. Click the extension icon — the popup opens as the quick config panel.
 2. Fill **Base URL**, **API Key**, and **Model** (e.g. `https://api.deepseek.com/v1` + your key + `deepseek-chat`).
-3. Click **Test connection** to verify the endpoint is reachable and your model name is valid.
+3. The status indicator next to the fields auto-pings on popup open and after Save — green means endpoint and model are reachable.
 4. Select text on any webpage → click the blue icon (or press **Alt+T**) → see the translation.
 
 Advanced settings (prompt templates, history, theme, UI language) live in the full settings page — accessible via the ⚙ icon at the top-right of the popup.

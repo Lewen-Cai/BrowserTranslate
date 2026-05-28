@@ -12,10 +12,11 @@
 市面上的翻译扩展要么把 LLM 锁在付费墙后、要么把你的文本经它们的服务器中转、要么把决定翻译质量的 prompt 藏起来。BrowserTranslate 反对以上三点。
 
 - **自带 Key**：兼容所有 OpenAI 协议的服务——OpenAI、DeepSeek、Moonshot、Groq、SiliconFlow、OpenRouter、本地 Ollama / LM Studio / vLLM
+  - 想用 Anthropic 或 Gemini？通过任何 OpenAI 兼容代理（LiteLLM、OpenRouter 等）转一层，把 Base URL 指向代理即可。
 - **零中转**：翻译请求由你的浏览器直接打到你配置的服务方，我们没有服务器
 - **零遥测**：不接入任何统计、错误上报、远程日志
 - **Prompt 开放**：所有翻译 prompt 都可编辑，自由调教学术 / 口语 / 技术风格
-- **一键连接测试**：翻译前先在 popup 验证端点和模型是否可用
+- **打开 popup 自动检测连接**：自动 ping 端点和模型可用性，状态指示灯实时显示
 
 ## 功能
 
@@ -23,7 +24,7 @@
 - 流式输出（SSE）
 - 多轮追问（"解释这个术语"、"翻得直白一点"）
 - 4 个内置 Prompt 模板 + 无限自定义模板
-- 内置连接测试（验证端点 + 模型有效性）
+- 打开 popup 自动检测连接（ping 端点 + 模型有效性）
 - 翻译缓存（可配 TTL）
 - 翻译历史（可搜索）
 - 浅色 / 深色主题（跟随系统）
@@ -43,7 +44,7 @@ Chrome Web Store 上架中。
 
 1. 点扩展图标，popup 即是快速配置面板。
 2. 填入 **Base URL**、**API Key** 和 **Model**（例如 `https://api.deepseek.com/v1` + 你的 key + `deepseek-chat`）。
-3. 点击 **Test connection** 验证端点是否可达、模型名是否有效。
+3. 字段旁的状态指示灯会在 popup 打开和保存后自动 ping —— 绿色表示端点和模型可用。
 4. 在任意网页选中文字 → 点蓝色图标（或按 **Alt+T**）→ 看到译文。
 
 高级设置（Prompt 模板、历史记录、主题、界面语言）在完整设置页里 —— 通过 popup 右上角的 ⚙ 图标进入。

@@ -2,6 +2,38 @@
 
 All notable changes will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.1.1] — 2026-05-28
+
+### Added
+- TranslationCard now follows the user's theme (light / dark / auto).
+- Popup API section: explicit Cloud / Local provider type toggle and
+  Cloud provider preset dropdown (OpenAI / DeepSeek / Custom).
+- 5-state status indicator: NOT CONFIGURED / CHECKING / READY / MODEL
+  NOT FOUND / OFFLINE, auto-pinged on popup open and on Save.
+- README mentions LiteLLM / OpenRouter as the path to Anthropic and
+  Gemini until native presets land.
+
+### Changed
+- Popup API section now uses an explicit "Save config" button (draft
+  editing) instead of live-saving every keystroke. Translation section
+  is unchanged.
+- Background ping no longer requires an API key when the provider type
+  is Local; the Authorization header is omitted when the key is empty.
+- Translate path (background + OpenAI provider) parity: Authorization
+  header skipped for local providers, lets local Ollama-style servers
+  translate end-to-end without a dummy key.
+
+### Removed
+- Manual "Test connection" button (subsumed by the auto-pinged status
+  indicator).
+- "Translation style preset" idea from the deferred wishlist.
+- "Native Anthropic / Gemini providers" idea from the deferred
+  wishlist (resolved via the LiteLLM hint).
+
+### Fixed
+- The popup status indicator no longer reports `READY` based on
+  "fields are non-empty" — it now reflects the actual ping result.
+
 ## [0.1.0] — 2026-05-28
 
 ### Added
