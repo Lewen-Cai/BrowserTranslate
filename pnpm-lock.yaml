@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       lucide-preact:
-        specifier: ^1.16.0
-        version: 1.16.0(preact@10.29.2)
+        specifier: ^1.17.0
+        version: 1.17.0(preact@10.29.2)
       preact:
         specifier: ^10.26.9
         version: 10.29.2
       zustand:
-        specifier: ^5.0.13
-        version: 5.0.13
+        specifier: ^5.0.14
+        version: 5.0.14
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.10.5
@@ -2076,8 +2076,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-preact@1.16.0:
-    resolution: {integrity: sha512-Sa1XSig6iWCFhdrqS+vT1EFJH4Yos2Q7H/EMawql1K+D9qjNRzjMutPySak0iMYto6PneHYAWoxnDBBlryjngw==}
+  lucide-preact@1.17.0:
+    resolution: {integrity: sha512-QoHqgMY9WJanT+zd8x5Hq9quOqY/MHt7oTpuPAZzCkfUhfxsTJ+L0CFnUaBBh+H54OySAElm2+UQ1JwQ2CDPmg==}
     peerDependencies:
       preact: ^10.27.2
 
@@ -3147,8 +3147,8 @@ packages:
   zod@4.4.3:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
-  zustand@5.0.13:
-    resolution: {integrity: sha512-efI2tVaVQPqtOh114loML/Z80Y4NP3yc+Ff0fYiZJPauNeWZeIp/bRFD7I9bfmCOYBh/PHxlglQ9+wvlwnPikQ==}
+  zustand@5.0.14:
+    resolution: {integrity: sha512-/8tAspM5LMPr28b3fwLYrtdj77ECpfZviaP75CMTnwO8ISyaE4GDIG/9rDDYq/cH9D2Xw2A2RXglLInmVBQB/g==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -5131,7 +5131,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-preact@1.16.0(preact@10.29.2):
+  lucide-preact@1.17.0(preact@10.29.2):
     dependencies:
       preact: 10.29.2
 
@@ -6284,4 +6284,4 @@ snapshots:
 
   zod@4.4.3: {}
 
-  zustand@5.0.13: {}
+  zustand@5.0.14: {}

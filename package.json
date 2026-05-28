@@ -18,9 +18,9 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "lucide-preact": "^1.16.0",
+    "lucide-preact": "^1.17.0",
     "preact": "^10.26.9",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.5",
