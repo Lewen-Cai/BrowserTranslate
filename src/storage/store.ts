@@ -12,6 +12,7 @@ interface AppStore {
   updateSettings: (patch: Partial<GlobalSettings>) => Promise<void>;
   upsertTemplate: (template: PromptTemplate) => Promise<void>;
   deleteTemplate: (id: string) => Promise<void>;
+  replaceAll: (data: AppData) => Promise<void>;
 }
 
 const client = new StorageClient();
@@ -57,6 +58,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
       api = { ...api, promptTemplateId: 'builtin-general' };
     }
     const data = { ...get().data, promptTemplates: templates, api };
+    await client.saveAppData(data);
+    set({ data });
+  },
+
+  async replaceAll(data) {
     await client.saveAppData(data);
     set({ data });
   },

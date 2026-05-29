@@ -23,6 +23,7 @@ export const STRINGS = {
   sectionApiEndpoint: { en: 'API Endpoint', 'zh-CN': '接口地址' },
   sectionCacheHistory: { en: 'Cache & History', 'zh-CN': '缓存与历史' },
   sectionAppearance: { en: 'Appearance', 'zh-CN': '外观' },
+  sectionData: { en: 'Data', 'zh-CN': '数据' },
   sectionPromptTemplates: { en: 'Prompt Templates', 'zh-CN': '提示词模板' },
   sectionHistory: { en: 'History', 'zh-CN': '翻译历史' },
   openaiCompatible: { en: 'OpenAI-compatible', 'zh-CN': '兼容 OpenAI 协议' },
@@ -88,6 +89,19 @@ export const STRINGS = {
   searchHistory: { en: 'Search source or translation...', 'zh-CN': '搜索原文或译文…' },
   noEntries: { en: 'No entries', 'zh-CN': '暂无记录' },
   noEntriesHint: { en: 'Translations you make will appear here.', 'zh-CN': '做过的翻译会显示在这里' },
+  exportSettings: { en: 'Export settings', 'zh-CN': '导出设置' },
+  importSettings: { en: 'Import settings', 'zh-CN': '导入设置' },
+  dataSectionDesc: {
+    en: 'Back up or transfer your configuration as a JSON file. History and cache are not included.',
+    'zh-CN': '将配置备份或迁移为 JSON 文件。不含翻译历史与缓存。',
+  },
+  includeApiKeys: { en: 'Include API keys', 'zh-CN': '包含 API 密钥' },
+  includeApiKeysWarning: {
+    en: 'The exported file will contain your API keys in plaintext. Keep it private.',
+    'zh-CN': '导出文件将以明文包含你的 API 密钥，请妥善保管。',
+  },
+  importSuccess: { en: 'Settings imported.', 'zh-CN': '设置已导入。' },
+  importFailed: { en: 'Import failed', 'zh-CN': '导入失败' },
   // Errors
   noProfileError: { en: 'API not configured. Open settings to add your key.', 'zh-CN': '尚未配置 API，请到设置中填入 Key。' },
 };
