@@ -1,7 +1,7 @@
 /** Default mode for a selection. The card lets the user override it. */
 export type LookupMode = 'translate' | 'dictionary';
 
-// Sentence-ending punctuation (Latin + CJK). Presence ⇒ it's prose, not a term.
+// Sentence-ending or clause-breaking punctuation (Latin + CJK). Presence ⇒ prose, not a term.
 const SENTENCE_PUNCT = /[.!?。！？…;；]/;
 // A term is at most a few words…
 const MAX_WORDS = 4;

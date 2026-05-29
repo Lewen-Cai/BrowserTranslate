@@ -20,6 +20,10 @@ describe('classifySelection', () => {
     expect(classifySelection('one two three four five')).toBe('translate');
   });
 
+  it('treats exactly 4 words as dictionary (boundary)', () => {
+    expect(classifySelection('one two three four')).toBe('dictionary');
+  });
+
   it('treats a short CJK term as dictionary', () => {
     expect(classifySelection('翻译')).toBe('dictionary');
   });
