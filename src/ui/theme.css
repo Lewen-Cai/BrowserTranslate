@@ -214,6 +214,81 @@ html, body {
   color: rgb(var(--ap-brand-fg));
 }
 .bt-card-mode-btn.bt-card-mode-active:hover { color: rgb(var(--ap-brand-fg)); }
+
+/* Structured dictionary entry (DEFINE mode) */
+.bt-card-dict {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.bt-card-dict-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bt-card-dict-word {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgb(var(--ap-fg));
+}
+.bt-card-dict-phon {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 12px;
+  color: rgb(var(--ap-fg-muted));
+}
+.bt-card-dict-pos {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgb(var(--ap-bg));
+  border: 1px solid rgb(var(--ap-border));
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgb(var(--ap-fg-muted));
+}
+.bt-card-dict-senses {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bt-card-dict-sense {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.bt-card-dict-num {
+  flex-shrink: 0;
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgb(var(--ap-brand));
+  min-width: 12px;
+}
+.bt-card-dict-example {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(var(--ap-border));
+}
+.bt-card-dict-example-label {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgb(var(--ap-fg-subtle));
+  margin-bottom: 4px;
+}
+.bt-card-dict-example-src {
+  color: rgb(var(--ap-fg-muted));
+  font-style: italic;
+}
+.bt-card-dict-example-tgt {
+  color: rgb(var(--ap-fg));
+  margin-top: 2px;
+}
 .bt-card-body {
   padding: 12px 14px;
   overflow-y: auto;

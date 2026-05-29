@@ -4,6 +4,8 @@ import { streamTranslate, abortTranslate } from '~/messaging/client';
 import { computeIconPosition, ICON_SIZE } from './TriggerIcon';
 import { computeCardVerticalLayout } from './cardLayout';
 import { classifySelection, type LookupMode } from '~/core/dictionary/classify';
+import { parseDictionaryEntry } from '~/core/dictionary/parse';
+import { DictionaryView } from './DictionaryView';
 
 interface Props {
   text: string;
@@ -99,6 +101,11 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   // so a long translation scrolls inside the card (see cardLayout.ts).
   const { top: cardTop, maxHeight } = computeCardVerticalLayout(rect);
 
+  // In dictionary mode the model returns JSON (non-streaming). Parse it once
+  // complete; fall back to raw text if the model didn't comply.
+  const dictEntry =
+    mode === 'dictionary' && !streaming && !error ? parseDictionaryEntry(translated) : null;
+
   return (
     <div
       class="bt-card"
@@ -146,6 +153,12 @@ export function TranslationCard({ text, rect, onClose }: Props) {
             <AlertCircle size={12} class="bt-card-error-icon" />
             <span>{error}</span>
           </div>
+        ) : mode === 'dictionary' && streaming ? (
+          <span class="bt-card-loading">
+            <Loader2 size={11} class="animate-spin" /> LOOKING UP
+          </span>
+        ) : dictEntry ? (
+          <DictionaryView entry={dictEntry} />
         ) : (
           <div class="bt-card-text">
             {translated || (streaming && (

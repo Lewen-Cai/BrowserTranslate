@@ -126,7 +126,9 @@ async function handleTranslate(
           sourceLang: sourceLang === 'unknown' ? undefined : sourceLang,
           template,
           maxTokens: api.maxTokens,
-          stream: data.settings.streamingEnabled,
+          // Dictionary mode returns a JSON object the card parses; partial JSON
+          // can't be rendered, so it always runs non-streaming.
+          stream: msg.mode === 'dictionary' ? false : data.settings.streamingEnabled,
           signal: abortCtl.signal,
           context: msg.context,
         })) {
