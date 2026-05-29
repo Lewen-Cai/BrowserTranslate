@@ -22,7 +22,7 @@
 
 - 划词翻译（图标二段触发，或纯快捷键模式）
 - 流式输出（SSE）
-- 云端 / 本地两种服务模式——选预设（OpenAI、DeepSeek）或自定义 OpenAI 兼容端点；本地服务无需 API Key
+- 云端 / 本地两种服务模式——选预设（OpenAI、DeepSeek、Moonshot、Zhipu GLM、Qwen、SiliconFlow、OpenRouter、Mistral；部分供应商可选国内 / 国际节点）或自定义 OpenAI 兼容端点；本地服务无需 API Key
 - 记住每个服务商的 key 与模型——切换服务商时自动恢复，无需重输
 - 4 个内置 Prompt 模板 + 无限自定义模板
 - 打开 popup 自动检测连接（ping 端点 + 模型有效性）
@@ -47,7 +47,7 @@ Chrome Web Store 上架中。
 
 1. 点扩展图标，popup 即是快速配置面板。
 2. 选择**服务类型**：
-   - **云服务**——选供应商预设（OpenAI / DeepSeek 会自动填好 Base URL），或选 **自定义** 自填任意 OpenAI 兼容的 Base URL，然后填 **API Key** 和 **模型**。
+   - **云服务**——选供应商预设（预设会自动填好 Base URL；多区域供应商可选国内 / 国际节点），或选 **自定义** 自填任意 OpenAI 兼容的 Base URL，然后填 **API Key** 和 **模型**。
    - **本地**——填本地 **Base URL**（例如 `http://localhost:11434/v1`）和 **模型**，无需 API Key。
 3. 点 **应用配置** 应用生效。状态指示灯会在 popup 打开和应用后自动 ping —— 绿色表示端点和模型可用。
 4. 在任意网页选中文字 → 点蓝色图标（或按 **Alt+T**）→ 看到译文。

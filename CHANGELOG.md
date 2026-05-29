@@ -9,10 +9,13 @@ All notable changes will be documented here. Format follows [Keep a Changelog](h
   Traditional Chinese, English, Japanese, Korean, Spanish, French, and German
   (Settings → General → Interface language). "Follow system" auto-detects the
   browser locale. The translation card follows the chosen language too.
+- More cloud provider presets: Moonshot (Kimi), Zhipu GLM, Qwen (DashScope),
+  SiliconFlow, OpenRouter, and Mistral, in addition to OpenAI and DeepSeek.
+  Providers with separate China and International services offer an endpoint
+  picker so you can choose the right base URL.
 
 ### Changed
-- The target translation language list is unchanged; this release only expands
-  the extension's own UI language.
+- The target translation language list is unchanged.
 
 ## [0.1.3] — 2026-05-29
 
