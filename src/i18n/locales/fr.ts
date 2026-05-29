@@ -75,8 +75,6 @@ export const fr: Record<StringKey, string> = {
   themeDark: 'Sombre',
   uiLanguage: 'Langue de l’interface',
   uiLangAuto: 'Selon le système',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: 'Nouveau modèle',
   builtin: 'INTÉGRÉ',

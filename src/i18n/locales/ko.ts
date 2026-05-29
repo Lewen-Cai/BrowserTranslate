@@ -75,8 +75,6 @@ export const ko: Record<StringKey, string> = {
   themeDark: '다크',
   uiLanguage: '인터페이스 언어',
   uiLangAuto: '시스템 설정 따름',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: '새 템플릿',
   builtin: '기본 제공',

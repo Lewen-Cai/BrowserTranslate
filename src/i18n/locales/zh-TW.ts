@@ -75,8 +75,6 @@ export const zhTW: Record<StringKey, string> = {
   themeDark: '深色',
   uiLanguage: '介面語言',
   uiLangAuto: '跟隨系統',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: '新增範本',
   builtin: '內建',

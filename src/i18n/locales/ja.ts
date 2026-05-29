@@ -75,8 +75,6 @@ export const ja: Record<StringKey, string> = {
   themeDark: 'ダーク',
   uiLanguage: '表示言語',
   uiLangAuto: 'システムに従う',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: '新規テンプレート',
   builtin: 'ビルトイン',

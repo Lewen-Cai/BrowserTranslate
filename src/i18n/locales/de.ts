@@ -75,8 +75,6 @@ export const de: Record<StringKey, string> = {
   themeDark: 'Dunkel',
   uiLanguage: 'Sprache der Oberfläche',
   uiLangAuto: 'Systemeinstellung folgen',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: 'Neue Vorlage',
   builtin: 'INTEGRIERT',

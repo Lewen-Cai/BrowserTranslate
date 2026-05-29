@@ -7,10 +7,22 @@ import { Button } from '~/ui/components/Button';
 import { SectionHeader } from '~/ui/components/SectionHeader';
 import { useT } from '~/i18n';
 import { exportAppData, importAppData } from '~/storage/transfer';
+import type { GlobalSettings } from '~/storage/schema';
 
 const LANGUAGES = [
   { value: 'zh-CN', label: '简体中文 (zh-CN)' },
   { value: 'zh-TW', label: '繁體中文 (zh-TW)' },
+  { value: 'en', label: 'English' },
+  { value: 'ja', label: '日本語' },
+  { value: 'ko', label: '한국어' },
+  { value: 'es', label: 'Español' },
+  { value: 'fr', label: 'Français' },
+  { value: 'de', label: 'Deutsch' },
+];
+
+const UI_LANGUAGES: { value: string; label: string }[] = [
+  { value: 'zh-CN', label: '简体中文' },
+  { value: 'zh-TW', label: '繁體中文' },
   { value: 'en', label: 'English' },
   { value: 'ja', label: '日本語' },
   { value: 'ko', label: '한국어' },
@@ -130,10 +142,14 @@ export function GeneralPage() {
             value={settings.uiLanguage}
             options={[
               { value: 'auto', label: t('uiLangAuto') },
-              { value: 'en', label: t('uiLangEn') },
-              { value: 'zh-CN', label: t('uiLangZhCN') },
+              ...UI_LANGUAGES,
             ]}
-            onChange={(e) => update({ uiLanguage: (e.target as HTMLSelectElement).value as 'auto' | 'en' | 'zh-CN' })}
+            onChange={(e) =>
+              update({
+                uiLanguage: (e.target as HTMLSelectElement)
+                  .value as GlobalSettings['uiLanguage'],
+              })
+            }
           />
         </div>
       </div>

@@ -75,8 +75,6 @@ export const en = {
   themeDark: 'Dark',
   uiLanguage: 'Interface language',
   uiLangAuto: 'Follow system',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: 'New template',
   builtin: 'BUILTIN',

@@ -75,8 +75,6 @@ export const zhCN: Record<StringKey, string> = {
   themeDark: '深色',
   uiLanguage: '界面语言',
   uiLangAuto: '跟随系统',
-  uiLangEn: 'English',
-  uiLangZhCN: '简体中文',
   // Prompt templates
   newTemplate: '新建模板',
   builtin: '内置',
