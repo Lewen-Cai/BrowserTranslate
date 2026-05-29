@@ -58,8 +58,6 @@ export const en = {
   iconAfterSelection: 'Icon after selection (default)',
   hotkeyOnly: 'Hotkey only — no icon',
   // Behavior
-  streamingOutput: 'Streaming output',
-  streamingDesc: 'Show translation as it generates',
   cacheTranslations: 'Cache translations',
   cacheDesc: 'Reuse exact-match translations to save tokens',
   cacheTtl: 'Cache TTL (days)',
@@ -67,7 +65,6 @@ export const en = {
   saveHistoryDesc: 'Stored locally; never sent anywhere',
   historyMax: 'History max entries',
   cacheShort: 'Cache',
-  streamingShort: 'Streaming',
   historyShort: 'History',
   // Appearance
   theme: 'Theme',
@@ -96,10 +93,6 @@ export const en = {
   importSuccess: 'Settings imported.',
   importFailed: 'Import failed',
   // Translation card (Shadow DOM)
-  cardModeTranslate: 'Translate',
-  cardModeDefine: 'Define',
-  cardTranslating: 'TRANSLATING',
-  cardLookingUp: 'LOOKING UP',
   cardExample: 'EXAMPLE',
   cardRefreshNeeded: 'Extension was updated. Please refresh this page to continue.',
   // Errors

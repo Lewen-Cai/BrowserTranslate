@@ -58,8 +58,6 @@ export const ja: Record<StringKey, string> = {
   iconAfterSelection: '選択後にアイコンを表示（デフォルト）',
   hotkeyOnly: 'ショートカットのみ — アイコンなし',
   // Behavior
-  streamingOutput: 'ストリーミング出力',
-  streamingDesc: '生成しながら翻訳を表示',
   cacheTranslations: '翻訳をキャッシュ',
   cacheDesc: '完全一致の翻訳を再利用してトークンを節約',
   cacheTtl: 'キャッシュ保持期間（日）',
@@ -67,7 +65,6 @@ export const ja: Record<StringKey, string> = {
   saveHistoryDesc: 'ローカルに保存され、どこにも送信されません',
   historyMax: '履歴の最大件数',
   cacheShort: 'キャッシュ',
-  streamingShort: 'ストリーミング',
   historyShort: '履歴',
   // Appearance
   theme: 'テーマ',
@@ -96,10 +93,6 @@ export const ja: Record<StringKey, string> = {
   importSuccess: '設定をインポートしました。',
   importFailed: 'インポートに失敗しました',
   // Translation card (Shadow DOM)
-  cardModeTranslate: '翻訳',
-  cardModeDefine: '辞書',
-  cardTranslating: '翻訳中',
-  cardLookingUp: '検索中',
   cardExample: '例文',
   cardRefreshNeeded: '拡張機能が更新されました。続行するにはこのページを再読み込みしてください。',
   // Errors

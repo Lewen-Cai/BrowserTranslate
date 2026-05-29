@@ -58,8 +58,6 @@ export const ko: Record<StringKey, string> = {
   iconAfterSelection: '선택 후 아이콘 표시 (기본값)',
   hotkeyOnly: '단축키만 — 아이콘 없음',
   // Behavior
-  streamingOutput: '스트리밍 출력',
-  streamingDesc: '생성되는 대로 번역 표시',
   cacheTranslations: '번역 캐시',
   cacheDesc: '동일한 텍스트의 번역을 재사용하여 토큰 절약',
   cacheTtl: '캐시 유지 기간(일)',
@@ -67,7 +65,6 @@ export const ko: Record<StringKey, string> = {
   saveHistoryDesc: '로컬에만 저장되며 어디에도 전송되지 않습니다',
   historyMax: '기록 최대 개수',
   cacheShort: '캐시',
-  streamingShort: '스트리밍',
   historyShort: '기록',
   // Appearance
   theme: '테마',
@@ -96,10 +93,6 @@ export const ko: Record<StringKey, string> = {
   importSuccess: '설정을 가져왔습니다.',
   importFailed: '가져오기 실패',
   // Translation card (Shadow DOM)
-  cardModeTranslate: '번역',
-  cardModeDefine: '사전',
-  cardTranslating: '번역 중',
-  cardLookingUp: '검색 중',
   cardExample: '예문',
   cardRefreshNeeded: '확장 프로그램이 업데이트되었습니다. 계속하려면 이 페이지를 새로고침하세요.',
   // Errors

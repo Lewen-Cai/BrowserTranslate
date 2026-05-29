@@ -58,8 +58,6 @@ export const de: Record<StringKey, string> = {
   iconAfterSelection: 'Symbol nach Auswahl (Standard)',
   hotkeyOnly: 'Nur Tastenkürzel — kein Symbol',
   // Behavior
-  streamingOutput: 'Streaming-Ausgabe',
-  streamingDesc: 'Übersetzung während der Generierung anzeigen',
   cacheTranslations: 'Übersetzungen zwischenspeichern',
   cacheDesc: 'Identische Übersetzungen wiederverwenden, um Tokens zu sparen',
   cacheTtl: 'Cache-Dauer (Tage)',
@@ -67,7 +65,6 @@ export const de: Record<StringKey, string> = {
   saveHistoryDesc: 'Lokal gespeichert; wird nirgendwohin gesendet',
   historyMax: 'Maximale Verlaufseinträge',
   cacheShort: 'Cache',
-  streamingShort: 'Streaming',
   historyShort: 'Verlauf',
   // Appearance
   theme: 'Design',
@@ -96,10 +93,6 @@ export const de: Record<StringKey, string> = {
   importSuccess: 'Einstellungen importiert.',
   importFailed: 'Import fehlgeschlagen',
   // Translation card (Shadow DOM)
-  cardModeTranslate: 'Übersetzen',
-  cardModeDefine: 'Definieren',
-  cardTranslating: 'ÜBERSETZEN',
-  cardLookingUp: 'NACHSCHLAGEN',
   cardExample: 'BEISPIEL',
   cardRefreshNeeded: 'Die Erweiterung wurde aktualisiert. Bitte lade diese Seite neu, um fortzufahren.',
   // Errors

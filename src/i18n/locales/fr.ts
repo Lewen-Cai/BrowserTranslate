@@ -58,8 +58,6 @@ export const fr: Record<StringKey, string> = {
   iconAfterSelection: 'Icône après sélection (par défaut)',
   hotkeyOnly: 'Raccourci uniquement — sans icône',
   // Behavior
-  streamingOutput: 'Sortie en streaming',
-  streamingDesc: 'Afficher la traduction au fur et à mesure',
   cacheTranslations: 'Mettre les traductions en cache',
   cacheDesc: 'Réutilise les traductions identiques pour économiser des tokens',
   cacheTtl: 'Durée du cache (jours)',
@@ -67,7 +65,6 @@ export const fr: Record<StringKey, string> = {
   saveHistoryDesc: 'Stocké localement ; jamais envoyé ailleurs',
   historyMax: 'Nombre max d’entrées d’historique',
   cacheShort: 'Cache',
-  streamingShort: 'Streaming',
   historyShort: 'Historique',
   // Appearance
   theme: 'Thème',
@@ -96,10 +93,6 @@ export const fr: Record<StringKey, string> = {
   importSuccess: 'Paramètres importés.',
   importFailed: 'Échec de l’importation',
   // Translation card (Shadow DOM)
-  cardModeTranslate: 'Traduire',
-  cardModeDefine: 'Définir',
-  cardTranslating: 'TRADUCTION',
-  cardLookingUp: 'RECHERCHE',
   cardExample: 'EXEMPLE',
   cardRefreshNeeded: 'L’extension a été mise à jour. Veuillez actualiser cette page pour continuer.',
   // Errors

@@ -58,8 +58,6 @@ export const zhTW: Record<StringKey, string> = {
   iconAfterSelection: '選取文字後顯示圖示（預設）',
   hotkeyOnly: '僅快速鍵觸發 — 不顯示圖示',
   // Behavior
-  streamingOutput: '串流輸出',
-  streamingDesc: '邊產生邊顯示譯文',
   cacheTranslations: '快取譯文',
   cacheDesc: '相同文字直接重用快取，節省 token',
   cacheTtl: '快取有效期（天）',
@@ -67,7 +65,6 @@ export const zhTW: Record<StringKey, string> = {
   saveHistoryDesc: '僅儲存在本機，不會上傳任何地方',
   historyMax: '歷史記錄上限',
   cacheShort: '快取',
-  streamingShort: '串流',
   historyShort: '歷史',
   // Appearance
   theme: '主題',
@@ -96,10 +93,6 @@ export const zhTW: Record<StringKey, string> = {
   importSuccess: '設定已匯入。',
   importFailed: '匯入失敗',
   // Translation card (Shadow DOM)
-  cardModeTranslate: '翻譯',
-  cardModeDefine: '字典',
-  cardTranslating: '翻譯中',
-  cardLookingUp: '查詢中',
   cardExample: '例句',
   cardRefreshNeeded: '擴充功能已更新，請重新整理此頁面以繼續。',
   // Errors

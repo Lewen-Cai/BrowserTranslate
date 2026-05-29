@@ -58,8 +58,6 @@ export const zhCN: Record<StringKey, string> = {
   iconAfterSelection: '选中文本后显示图标（默认）',
   hotkeyOnly: '仅快捷键触发 — 不显示图标',
   // Behavior
-  streamingOutput: '流式输出',
-  streamingDesc: '边生成边显示译文',
   cacheTranslations: '缓存译文',
   cacheDesc: '相同文本直接复用缓存，省 token',
   cacheTtl: '缓存有效期（天）',
@@ -67,7 +65,6 @@ export const zhCN: Record<StringKey, string> = {
   saveHistoryDesc: '仅保存在本地，不会上传任何地方',
   historyMax: '历史记录上限',
   cacheShort: '缓存',
-  streamingShort: '流式',
   historyShort: '历史',
   // Appearance
   theme: '主题',
@@ -96,10 +93,6 @@ export const zhCN: Record<StringKey, string> = {
   importSuccess: '设置已导入。',
   importFailed: '导入失败',
   // Translation card (Shadow DOM)
-  cardModeTranslate: '翻译',
-  cardModeDefine: '词典',
-  cardTranslating: '翻译中',
-  cardLookingUp: '查询中',
   cardExample: '例句',
   cardRefreshNeeded: '扩展已更新，请刷新此页面以继续。',
   // Errors
