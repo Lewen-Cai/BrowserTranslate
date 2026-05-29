@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveLocale } from './index';
+import { resolveLocale } from './resolveLocale';
 
 describe('resolveLocale', () => {
   it('passes through an explicit locale setting', () => {

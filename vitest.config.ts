@@ -16,13 +16,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    server: {
-      deps: {
-        // zustand v5 imports 'react' from node_modules; inline it so Vite's
-        // react→preact/compat alias is applied during resolution.
-        inline: ['zustand'],
-      },
-    },
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts', 'src/**/*.tsx'],
