@@ -1,7 +1,14 @@
+/** US / UK IPA. Present only for a single English/Latin word — never for
+ *  phrases, proper nouns, or non-Latin scripts (no pinyin/romanization). */
+export interface Phonetic {
+  us?: string;
+  uk?: string;
+}
+
 /** A structured dictionary entry rendered by the card's DictionaryView. */
 export interface DictionaryEntry {
   headword: string;
-  phonetic?: string;        // IPA, Latin-script words only (never pinyin/romanization)
+  phonetic?: Phonetic;
   partOfSpeech?: string;
   senses: string[];
   example?: { source: string; target: string };
@@ -37,7 +44,12 @@ export function parseDictionaryEntry(raw: string): DictionaryEntry | null {
 
   const entry: DictionaryEntry = { headword, senses };
 
-  if (typeof o.phonetic === 'string' && o.phonetic.trim()) entry.phonetic = o.phonetic.trim();
+  if (o.phonetic && typeof o.phonetic === 'object' && !Array.isArray(o.phonetic)) {
+    const p = o.phonetic as Record<string, unknown>;
+    const us = typeof p.us === 'string' ? p.us.trim() : '';
+    const uk = typeof p.uk === 'string' ? p.uk.trim() : '';
+    if (us || uk) entry.phonetic = { ...(us && { us }), ...(uk && { uk }) };
+  }
   if (typeof o.partOfSpeech === 'string' && o.partOfSpeech.trim()) entry.partOfSpeech = o.partOfSpeech.trim();
 
   if (o.example && typeof o.example === 'object' && !Array.isArray(o.example)) {
