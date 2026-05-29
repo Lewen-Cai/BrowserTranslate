@@ -38,7 +38,7 @@ export function GeneralPage() {
     a.href = url;
     a.download = 'browsertranslate-settings.json';
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   async function handleImportFile(e: Event) {
@@ -50,6 +50,7 @@ export function GeneralPage() {
       const next = importAppData(parsed);
       await replaceAll(next);
       setImportMsg({ ok: true, text: t('importSuccess') });
+      setTimeout(() => setImportMsg(null), 4000);
     } catch (err) {
       setImportMsg({ ok: false, text: `${t('importFailed')}: ${(err as Error).message}` });
     } finally {
