@@ -39,7 +39,7 @@ export interface GlobalSettings {
   historyEnabled: boolean;
   historyMaxEntries: number;
   theme: 'light' | 'dark' | 'auto';
-  uiLanguage: 'zh-CN' | 'en' | 'auto';
+  uiLanguage: 'auto' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'es' | 'fr' | 'de';
 }
 
 export interface PromptTemplate {

@@ -70,7 +70,7 @@ export default defineContentScript({
 
       const data = await client.loadAppData();
       themeSetting = data.settings.theme;
-      locale = resolveLocale(data.settings.uiLanguage);
+      locale = resolveLocale(data.settings.uiLanguage, navigator.language);
       applyTheme();
 
       if (data.settings.triggerMode === 'icon') {

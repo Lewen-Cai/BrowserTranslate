@@ -6,14 +6,8 @@ import { TranslationProviderError } from '~/core/providers/types';
 import { computeCacheKey } from '~/core/cache/key';
 import { detectLanguage } from '~/core/language/detect';
 import { DICTIONARY_TEMPLATE } from '~/core/dictionary/prompt';
-import { t as i18nT } from '~/i18n';
-import type { Locale } from '~/i18n/strings';
+import { t as i18nT, resolveLocale } from '~/i18n';
 import type { Request, TranslateRequest } from '~/messaging/types';
-
-function localeFromSetting(setting: string): Locale {
-  if (setting === 'zh-CN' || setting === 'en') return setting;
-  return 'en';
-}
 
 export default defineBackground(() => {
   const client = new StorageClient();
@@ -66,7 +60,10 @@ async function handleTranslate(
     const api = data.api;
     const missingKey = api.providerType === 'cloud' && !api.apiKey;
     if (!api.baseUrl || missingKey || !api.model) {
-      const locale = localeFromSetting(data.settings.uiLanguage);
+      const locale = resolveLocale(
+        data.settings.uiLanguage,
+        typeof navigator !== 'undefined' ? navigator.language : 'en',
+      );
       send({
         type: 'translate:error',
         requestId: msg.requestId,
