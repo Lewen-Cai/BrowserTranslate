@@ -3,7 +3,7 @@ import { X, AlertCircle, Loader2 } from '~/ui/icons';
 import { streamTranslate, abortTranslate } from '~/messaging/client';
 import { computeIconPosition, ICON_SIZE } from './TriggerIcon';
 import { computeCardVerticalLayout } from './cardLayout';
-import { classifySelection, type LookupMode } from '~/core/dictionary/classify';
+import { looksLikeDictionary } from '~/core/dictionary/discriminate';
 import { parseDictionaryEntry } from '~/core/dictionary/parse';
 import { DictionaryView } from './DictionaryView';
 import { t } from '~/i18n';
@@ -32,28 +32,19 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);   // drives open animation
   const currentReqId = useRef<string>('');
-  const runGeneration = useRef(0);
-  const [mode, setMode] = useState<LookupMode>(() => classifySelection(text));
+  const cancelled = useRef(false);
 
   useEffect(() => {
-    // Trigger the open animation after first paint.
     const id = window.requestAnimationFrame(() => setVisible(true));
-    void run(mode);
+    void run();
     return () => {
+      cancelled.current = true;
       window.cancelAnimationFrame(id);
       if (currentReqId.current) abortTranslate(currentReqId.current);
     };
-  }, []); // intentionally run on mount only
+  }, []); // mount only
 
-  function switchMode(next: LookupMode) {
-    if (next === mode) return;
-    if (currentReqId.current) abortTranslate(currentReqId.current);
-    setMode(next);
-    void run(next);
-  }
-
-  async function run(activeMode: LookupMode) {
-    const gen = ++runGeneration.current;
+  async function run() {
     setTranslated('');
     setError(null);
     setStreaming(true);
@@ -65,10 +56,9 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
         type: 'translate',
         requestId: reqId,
         text,
-        mode: activeMode,
         context: { url: location.href, title: document.title },
       })) {
-        if (runGeneration.current !== gen) return;
+        if (cancelled.current) return;
         if (msg.type === 'translate:chunk') {
           full += msg.delta;
           setTranslated(full);
@@ -82,32 +72,27 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
         }
       }
     } catch (e) {
-      if (runGeneration.current !== gen) return;
+      if (cancelled.current) return;
       setError(friendlyError((e as Error).message, locale));
       setStreaming(false);
     }
   }
 
-  // Position the card so its TOP-RIGHT corner is anchored to where the
-  // icon was. Visually the card then drops down-and-left from the icon.
   const iconPos = computeIconPosition(rect);
   const iconRight = iconPos.left + ICON_SIZE;
   let cardLeft = iconRight - CARD_WIDTH;
-
-  // Clamp horizontally
   const minLeft = window.scrollX + 4;
   const maxLeft = window.scrollX + window.innerWidth - CARD_WIDTH - 4;
   if (cardLeft < minLeft) cardLeft = minLeft;
   if (cardLeft > maxLeft) cardLeft = maxLeft;
-
-  // Vertical placement keeps the card inside the viewport and caps its height
-  // so a long translation scrolls inside the card (see cardLayout.ts).
   const { top: cardTop, maxHeight } = computeCardVerticalLayout(rect);
 
-  // In dictionary mode the model returns JSON (non-streaming). Parse it once
-  // complete; fall back to raw text if the model didn't comply.
-  const dictEntry =
-    mode === 'dictionary' && !streaming && !error ? parseDictionaryEntry(translated) : null;
+  // The model decides translate vs dictionary; we discriminate from the response.
+  // A dictionary reply is a JSON object (starts with '{') — partial JSON can't be
+  // rendered, so we show a neutral loading state until the stream completes, then
+  // parse it (raw-text fallback on parse failure). Plain translations stream live.
+  const isDict = looksLikeDictionary(translated);
+  const dictEntry = isDict && !streaming && !error ? parseDictionaryEntry(translated) : null;
 
   return (
     <div
@@ -129,20 +114,6 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
         <div class="bt-card-strip" />
         <div class="bt-card-header-content">
           <div class="bt-card-title-row">
-            <div class="bt-card-modes">
-              <button
-                class={mode === 'translate' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
-                onClick={() => switchMode('translate')}
-              >
-                {t('cardModeTranslate', locale)}
-              </button>
-              <button
-                class={mode === 'dictionary' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
-                onClick={() => switchMode('dictionary')}
-              >
-                {t('cardModeDefine', locale)}
-              </button>
-            </div>
             <span class="bt-card-brand-mark">BrowserTranslate</span>
           </div>
           <button onClick={onClose} class="bt-card-close" aria-label="Close">
@@ -156,9 +127,9 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
             <AlertCircle size={12} class="bt-card-error-icon" />
             <span>{error}</span>
           </div>
-        ) : mode === 'dictionary' && streaming ? (
+        ) : isDict && streaming ? (
           <span class="bt-card-loading">
-            <Loader2 size={11} class="animate-spin" /> {t('cardLookingUp', locale)}
+            <Loader2 size={11} class="animate-spin" /> {t('loading', locale)}
           </span>
         ) : dictEntry ? (
           <DictionaryView entry={dictEntry} locale={locale} />
@@ -166,7 +137,7 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
           <div class="bt-card-text">
             {translated || (streaming && (
               <span class="bt-card-loading">
-                <Loader2 size={11} class="animate-spin" /> {t('cardTranslating', locale)}
+                <Loader2 size={11} class="animate-spin" /> {t('loading', locale)}
               </span>
             ))}
           </div>
