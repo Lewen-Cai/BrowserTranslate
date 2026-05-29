@@ -5,7 +5,8 @@ import { OpenAICompatibleProvider } from '~/core/providers/openai';
 import { TranslationProviderError } from '~/core/providers/types';
 import { computeCacheKey } from '~/core/cache/key';
 import { detectLanguage } from '~/core/language/detect';
-import { DICTIONARY_TEMPLATE } from '~/core/dictionary/prompt';
+import { autoSystemPrompt } from '~/core/dictionary/prompt';
+import { looksLikeDictionary } from '~/core/dictionary/discriminate';
 import { t as i18nT, resolveLocale } from '~/i18n';
 import type { Request, TranslateRequest } from '~/messaging/types';
 
@@ -72,11 +73,8 @@ async function handleTranslate(
       });
       return;
     }
-    const template =
-      msg.mode === 'dictionary'
-        ? DICTIONARY_TEMPLATE
-        : data.promptTemplates.find((t) => t.id === api.promptTemplateId);
-    if (!template) {
+    const activeTemplate = data.promptTemplates.find((t) => t.id === api.promptTemplateId);
+    if (!activeTemplate) {
       send({
         type: 'translate:error',
         requestId: msg.requestId,
@@ -85,6 +83,10 @@ async function handleTranslate(
       });
       return;
     }
+    const template = {
+      ...activeTemplate,
+      systemPrompt: autoSystemPrompt(activeTemplate.systemPrompt),
+    };
 
     const targetLang = msg.targetLang ?? data.settings.targetLanguage;
     const sourceLang = msg.sourceLang ?? detectLanguage(msg.text);
@@ -123,9 +125,7 @@ async function handleTranslate(
           sourceLang: sourceLang === 'unknown' ? undefined : sourceLang,
           template,
           maxTokens: api.maxTokens,
-          // Dictionary mode returns a JSON object the card parses; partial JSON
-          // can't be rendered, so it always runs non-streaming.
-          stream: msg.mode === 'dictionary' ? false : data.settings.streamingEnabled,
+          stream: true,
           signal: abortCtl.signal,
           context: msg.context,
         })) {
@@ -142,7 +142,7 @@ async function handleTranslate(
     if (cacheKey && full) {
       await new CacheStore(client, data.settings.cacheTTLDays).set(cacheKey, full);
     }
-    if (data.settings.historyEnabled && full && msg.mode !== 'dictionary') {
+    if (data.settings.historyEnabled && full && !looksLikeDictionary(full)) {
       await new HistoryStore(client, data.settings.historyMaxEntries).add({
         id: msg.requestId,
         sourceText: msg.text,

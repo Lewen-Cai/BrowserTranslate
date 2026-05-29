@@ -1,20 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import { DICTIONARY_TEMPLATE } from './prompt';
-import { renderPrompt } from '~/core/prompt/render';
+import { autoSystemPrompt, DICTIONARY_SPEC } from './prompt';
 
-describe('DICTIONARY_TEMPLATE', () => {
-  it('has the synthetic builtin id used for cache separation', () => {
-    expect(DICTIONARY_TEMPLATE.id).toBe('builtin-dictionary');
-    expect(DICTIONARY_TEMPLATE.isBuiltin).toBe(true);
+describe('DICTIONARY_SPEC', () => {
+  it('carries the JSON contract parseDictionaryEntry expects', () => {
+    expect(DICTIONARY_SPEC).toContain('"headword"');
+    expect(DICTIONARY_SPEC).toContain('senses');
+    expect(DICTIONARY_SPEC).toContain('phonetic');
   });
+});
 
-  it('keeps targetLang substitution in the user prompt (system is sent verbatim)', () => {
-    expect(DICTIONARY_TEMPLATE.systemPrompt).not.toContain('{{');
-    const rendered = renderPrompt(DICTIONARY_TEMPLATE.userPromptTemplate, {
-      text: 'serendipity',
-      targetLang: 'zh-CN',
-    });
-    expect(rendered).toContain('serendipity');
-    expect(rendered).toContain('zh-CN');
+describe('autoSystemPrompt', () => {
+  it('embeds the dictionary spec and preserves the translation style', () => {
+    const sys = autoSystemPrompt('Be very formal and academic.');
+    expect(sys).toContain('headword');
+    expect(sys).toContain('Be very formal and academic.');
+    expect(sys).toContain('TRANSLATION MODE');
+    expect(sys).toContain('DICTIONARY MODE');
   });
 });
