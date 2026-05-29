@@ -16,6 +16,10 @@ All notable changes will be documented here. Format follows [Keep a Changelog](h
 
 ### Changed
 - The target translation language list is unchanged.
+- Translate vs. dictionary mode is now decided automatically by the model in a
+  single streaming pass, replacing the client-side guess. The manual
+  Translate/Define toggle on the card and the streaming on/off setting have been
+  removed (translations always stream).
 
 ## [0.1.3] — 2026-05-29
 
