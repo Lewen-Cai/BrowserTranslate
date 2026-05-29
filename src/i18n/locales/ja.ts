@@ -38,6 +38,7 @@ export const ja: Record<StringKey, string> = {
   providerTypeLocal: 'ローカル',
   cloudProvider: 'プロバイダー',
   cloudProviderCustom: 'カスタム',
+  cloudEndpoint: 'エンドポイント',
   applyConfig: '設定を適用',
   // Status states
   statusChecking: '確認中…',

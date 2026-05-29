@@ -38,6 +38,7 @@ export const ko: Record<StringKey, string> = {
   providerTypeLocal: '로컬',
   cloudProvider: '제공자',
   cloudProviderCustom: '사용자 지정',
+  cloudEndpoint: '엔드포인트',
   applyConfig: '설정 적용',
   // Status states
   statusChecking: '확인 중…',

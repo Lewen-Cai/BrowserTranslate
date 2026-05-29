@@ -38,6 +38,7 @@ export const es: Record<StringKey, string> = {
   providerTypeLocal: 'Local',
   cloudProvider: 'Proveedor',
   cloudProviderCustom: 'Personalizado',
+  cloudEndpoint: 'Endpoint',
   applyConfig: 'Aplicar configuración',
   // Status states
   statusChecking: 'Comprobando…',

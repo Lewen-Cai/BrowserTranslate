@@ -38,6 +38,7 @@ export const en = {
   providerTypeLocal: 'Local',
   cloudProvider: 'Provider',
   cloudProviderCustom: 'Custom',
+  cloudEndpoint: 'Endpoint',
   applyConfig: 'Apply config',
   // Status states
   statusChecking: 'Checking…',

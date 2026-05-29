@@ -38,6 +38,7 @@ export const zhCN: Record<StringKey, string> = {
   providerTypeLocal: '本地',
   cloudProvider: '供应商',
   cloudProviderCustom: '自定义',
+  cloudEndpoint: '节点',
   applyConfig: '应用配置',
   // Status states
   statusChecking: '检测中…',

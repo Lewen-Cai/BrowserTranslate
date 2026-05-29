@@ -38,6 +38,7 @@ export const zhTW: Record<StringKey, string> = {
   providerTypeLocal: '本機',
   cloudProvider: '供應商',
   cloudProviderCustom: '自訂',
+  cloudEndpoint: '節點',
   applyConfig: '套用設定',
   // Status states
   statusChecking: '檢查中…',
