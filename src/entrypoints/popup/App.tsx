@@ -103,7 +103,7 @@ export function App() {
           <div class="flex-1 px-4 py-3 flex items-center justify-between">
             <div>
               <div class="font-mono text-2xs text-ap-subtle tracking-wider">BROWSERTRANSLATE</div>
-              <div class="font-semibold text-sm">v0.1.1</div>
+              <div class="font-semibold text-sm">v{chrome.runtime.getManifest().version}</div>
             </div>
             <button
               onClick={openOptions}

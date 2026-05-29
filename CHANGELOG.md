@@ -2,6 +2,33 @@
 
 All notable changes will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.1.2] — 2026-05-29
+
+### Added
+- Per-provider config memory: each cloud provider (OpenAI / DeepSeek /
+  Custom) and Local remembers its own Base URL, API key, and model.
+  Switching providers restores the remembered config instead of clearing
+  to a blank slate — no re-typing. The active request always uses the
+  active provider's key (keys are never cross-sent).
+
+### Changed
+- Popup "Save config" button renamed to "Apply config" — it now both
+  saves the draft and switches the active provider.
+- Popup version label is read from the extension manifest instead of a
+  hardcoded string.
+- Dependencies: zustand 5.0.14, lucide-preact 1.17.0.
+
+### Fixed
+- Selection trigger icon and translation card no longer render off-screen
+  on scrolled pages (the shadow host was viewport-anchored while its
+  contents used document coordinates).
+- Long translations now scroll inside the card instead of overflowing
+  past the viewport.
+
+### Removed
+- Dead `followUp` backend code (a remnant of the dropped multi-turn
+  follow-up input that had no UI to invoke it).
+
 ## [0.1.1] — 2026-05-28
 
 ### Added
