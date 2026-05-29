@@ -1,9 +1,25 @@
 import type { PingResponse, Request, TranslateRequest, TranslateResponse } from './types';
 
+/**
+ * After an extension reload/update, content scripts already running in open tabs
+ * are orphaned: `chrome.runtime` becomes undefined (or loses its id). Surface a
+ * clean, user-actionable error (caught by the card's friendlyError → "refresh
+ * this page") instead of a raw "Cannot read properties of undefined" TypeError.
+ */
+function assertExtensionContext(): void {
+  if (typeof chrome === 'undefined' || !chrome.runtime || !chrome.runtime.id) {
+    throw new Error('Extension context invalidated — please refresh this page.');
+  }
+}
+
 export function sendRequest(req: Request): void {
-  void chrome.runtime.sendMessage(req).catch(() => {
-    // background may not be ready yet on first install
-  });
+  try {
+    void chrome.runtime.sendMessage(req).catch(() => {
+      // background may not be ready yet on first install
+    });
+  } catch {
+    // Context invalidated (orphaned content script) — nothing to send.
+  }
 }
 
 /**
@@ -11,6 +27,7 @@ export function sendRequest(req: Request): void {
  * Caller owns the requestId and is responsible for unique-ifying it.
  */
 export async function* streamTranslate(req: TranslateRequest): AsyncIterable<TranslateResponse> {
+  assertExtensionContext();
   const queue: TranslateResponse[] = [];
   let resolveNext: ((v: TranslateResponse | null) => void) | null = null;
   let ended = false;
@@ -60,6 +77,12 @@ export function abortTranslate(requestId: string): void {
 export function pingApi(): Promise<PingResponse> {
   const requestId = `ping-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   return new Promise((resolve) => {
+    try {
+      assertExtensionContext();
+    } catch (e) {
+      resolve({ type: 'ping:error', requestId, message: (e as Error).message });
+      return;
+    }
     const listener = (msg: unknown) => {
       const m = msg as PingResponse;
       if (m.requestId !== requestId) return;
