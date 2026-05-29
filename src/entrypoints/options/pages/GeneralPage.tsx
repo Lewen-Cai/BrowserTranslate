@@ -91,12 +91,6 @@ export function GeneralPage() {
             hint={t('hotkeyHint')}
             onInput={(e) => update({ hotkey: (e.target as HTMLInputElement).value })}
           />
-          <Switch
-            checked={settings.streamingEnabled}
-            onChange={(v) => update({ streamingEnabled: v })}
-            label={t('streamingOutput')}
-            description={t('streamingDesc')}
-          />
         </div>
       </div>
 

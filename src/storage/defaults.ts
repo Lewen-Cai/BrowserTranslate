@@ -16,7 +16,6 @@ export function createDefaultAppData(): AppData {
       targetLanguage: 'zh-CN',
       triggerMode: 'icon',
       hotkey: 'Alt+T',
-      streamingEnabled: true,
       cacheEnabled: true,
       cacheTTLDays: 30,
       historyEnabled: true,

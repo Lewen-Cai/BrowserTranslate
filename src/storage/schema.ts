@@ -42,7 +42,6 @@ export interface GlobalSettings {
   targetLanguage: string;
   triggerMode: 'icon' | 'hotkey';
   hotkey: string;
-  streamingEnabled: boolean;
   cacheEnabled: boolean;
   cacheTTLDays: number;
   historyEnabled: boolean;

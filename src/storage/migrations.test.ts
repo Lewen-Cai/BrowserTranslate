@@ -9,7 +9,6 @@ const baseSettings = {
   targetLanguage: 'en',
   triggerMode: 'icon' as const,
   hotkey: 'Alt+T',
-  streamingEnabled: true,
   cacheEnabled: true,
   cacheTTLDays: 30,
   historyEnabled: true,
