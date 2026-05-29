@@ -27,6 +27,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);   // drives open animation
   const currentReqId = useRef<string>('');
+  const runGeneration = useRef(0);
   const [mode, setMode] = useState<LookupMode>(() => classifySelection(text));
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   }
 
   async function run(activeMode: LookupMode) {
+    const gen = ++runGeneration.current;
     setTranslated('');
     setError(null);
     setStreaming(true);
@@ -61,6 +63,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         mode: activeMode,
         context: { url: location.href, title: document.title },
       })) {
+        if (runGeneration.current !== gen) return;
         if (msg.type === 'translate:chunk') {
           full += msg.delta;
           setTranslated(full);
@@ -74,6 +77,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         }
       }
     } catch (e) {
+      if (runGeneration.current !== gen) return;
       setError(friendlyError((e as Error).message));
       setStreaming(false);
     }

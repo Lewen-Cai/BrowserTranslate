@@ -213,7 +213,7 @@ html, body {
   background: rgb(var(--ap-brand));
   color: rgb(var(--ap-brand-fg));
 }
-.bt-card-mode-active:hover { color: rgb(var(--ap-brand-fg)); }
+.bt-card-mode-btn.bt-card-mode-active:hover { color: rgb(var(--ap-brand-fg)); }
 .bt-card-body {
   padding: 12px 14px;
   overflow-y: auto;
