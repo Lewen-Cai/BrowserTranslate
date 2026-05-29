@@ -6,10 +6,11 @@ All notable changes will be documented here. Format follows [Keep a Changelog](h
 
 ### Added
 - Dictionary mode: selecting a single word or short term shows a structured
-  dictionary entry (IPA pronunciation for English/Latin words, part of speech,
-  numbered senses, and an example) instead of a full translation. The mode is
+  dictionary entry (US/UK IPA for single English words, part of speech, numbered
+  senses, and an example) instead of a full translation. The mode is
   auto-detected from the selection, with a manual Translate/Define toggle on the
-  card. Uses your configured model — no third-party dictionary service.
+  card, and the card follows your UI language. Uses your configured model — no
+  third-party dictionary service.
 - Settings export / import (Settings → Data): back up or transfer your
   configuration as a JSON file. API keys are excluded by default (opt-in
   checkbox to include them). History and cache are not exported.
