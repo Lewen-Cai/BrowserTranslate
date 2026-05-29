@@ -42,6 +42,7 @@ export function ApiSettingsPage() {
         <SegmentedControl<'cloud' | 'local'>
           label={t('providerType')}
           value={api.providerType}
+          fullWidth
           options={[
             { value: 'cloud', label: t('providerTypeCloud') },
             { value: 'local', label: t('providerTypeLocal') },
