@@ -13,7 +13,7 @@ export const DICTIONARY_SPEC =
   '- phonetic: provide US and UK IPA in slashes ONLY when the headword is a SINGLE English/Latin word ' +
   '(e.g. {"us": "/ˈkʌlər/", "uk": "/ˈkʌlə/"}). Set phonetic to null for multi-word phrases, proper nouns, ' +
   'and any non-Latin script (Chinese/Japanese/Korean) — never add pinyin or romanization.\n' +
-  '- partOfSpeech: written in the target language; empty string when not applicable.\n' +
+  '- partOfSpeech: for a SINGLE word, its part of speech in the target language. For a multi-word phrase, term, or proper noun, use the target-language word for "phrase" (e.g. 短语) or an empty string — never label a multi-word selection with a single-word part of speech like "noun".\n' +
   '- senses: 1 to 3 short definitions in the target language; for a proper noun, a single sense glossing what it refers to.\n' +
   '- example: one natural example sentence (source in the term\'s own language, target translated into the target language), or null.';
 
@@ -25,9 +25,12 @@ export const DICTIONARY_SPEC =
 export function autoSystemPrompt(styleSystemPrompt: string): string {
   return (
     'You handle a user text selection and decide, on your own, which of two modes fits.\n\n' +
+    'Routing rule: choose DICTIONARY MODE when the selection is a single word, or a short established ' +
+    'term, idiom, or proper noun worth a glossary entry. Choose TRANSLATION MODE when the selection is a ' +
+    'sentence, a clause, or running prose — even if short. A single word should almost always use ' +
+    'DICTIONARY MODE.\n\n' +
     'DICTIONARY MODE — ' + DICTIONARY_SPEC + '\n\n' +
-    'TRANSLATION MODE — for anything else (a sentence, a passage, or multi-word text that is not a ' +
-    'dictionary-worthy term), output ONLY the translation as plain text: no JSON, no quotes, no labels. ' +
+    'TRANSLATION MODE — output ONLY the translation as plain text: no JSON, no quotes, no labels. ' +
     'Follow these translation style instructions:\n' +
     styleSystemPrompt + '\n\n' +
     'Output ONLY the dictionary JSON object OR the plain translation — nothing else.'
