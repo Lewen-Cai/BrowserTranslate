@@ -1,12 +1,9 @@
-import type { LookupMode } from '~/core/dictionary/classify';
-
 export interface TranslateRequest {
   type: 'translate';
   requestId: string;
   text: string;
   sourceLang?: string;
   targetLang?: string;           // omit → use global setting
-  mode?: LookupMode;             // omit → 'translate' (back-compat)
   context?: { url?: string; title?: string };
 }
 
