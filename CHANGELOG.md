@@ -2,6 +2,18 @@
 
 All notable changes will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.1.4] — 2026-05-29
+
+### Added
+- Interface language now available in 8 languages — Simplified Chinese,
+  Traditional Chinese, English, Japanese, Korean, Spanish, French, and German
+  (Settings → General → Interface language). "Follow system" auto-detects the
+  browser locale. The translation card follows the chosen language too.
+
+### Changed
+- The target translation language list is unchanged; this release only expands
+  the extension's own UI language.
+
 ## [0.1.3] — 2026-05-29
 
 ### Added
