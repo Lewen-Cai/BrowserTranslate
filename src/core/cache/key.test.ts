@@ -32,6 +32,12 @@ describe('computeCacheKey', () => {
     expect(a).not.toBe(b);
   });
 
+  it('separates dictionary from translation via the builtin-dictionary id', async () => {
+    const translation = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-general', targetLang: 'zh-CN' });
+    const dictionary = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-dictionary', targetLang: 'zh-CN' });
+    expect(translation).not.toBe(dictionary);
+  });
+
   it('produces hex-only output', async () => {
     const k = await computeCacheKey({ text: 't', model: 'm', promptTemplateId: 'p', targetLang: 'en' });
     expect(k).toMatch(/^[0-9a-f]+$/);

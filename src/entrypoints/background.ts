@@ -5,6 +5,7 @@ import { OpenAICompatibleProvider } from '~/core/providers/openai';
 import { TranslationProviderError } from '~/core/providers/types';
 import { computeCacheKey } from '~/core/cache/key';
 import { detectLanguage } from '~/core/language/detect';
+import { DICTIONARY_TEMPLATE } from '~/core/dictionary/prompt';
 import { t as i18nT } from '~/i18n';
 import type { Locale } from '~/i18n/strings';
 import type { Request, TranslateRequest } from '~/messaging/types';
@@ -74,7 +75,10 @@ async function handleTranslate(
       });
       return;
     }
-    const template = data.promptTemplates.find((t) => t.id === api.promptTemplateId);
+    const template =
+      msg.mode === 'dictionary'
+        ? DICTIONARY_TEMPLATE
+        : data.promptTemplates.find((t) => t.id === api.promptTemplateId);
     if (!template) {
       send({
         type: 'translate:error',
@@ -139,7 +143,7 @@ async function handleTranslate(
     if (cacheKey && full) {
       await new CacheStore(client, data.settings.cacheTTLDays).set(cacheKey, full);
     }
-    if (data.settings.historyEnabled && full) {
+    if (data.settings.historyEnabled && full && msg.mode !== 'dictionary') {
       await new HistoryStore(client, data.settings.historyMaxEntries).add({
         id: msg.requestId,
         sourceText: msg.text,
