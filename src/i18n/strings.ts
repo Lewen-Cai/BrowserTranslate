@@ -102,6 +102,13 @@ export const STRINGS = {
   },
   importSuccess: { en: 'Settings imported.', 'zh-CN': '设置已导入。' },
   importFailed: { en: 'Import failed', 'zh-CN': '导入失败' },
+  // Translation card (Shadow DOM)
+  cardModeTranslate: { en: 'Translate', 'zh-CN': '翻译' },
+  cardModeDefine: { en: 'Define', 'zh-CN': '词典' },
+  cardTranslating: { en: 'TRANSLATING', 'zh-CN': '翻译中' },
+  cardLookingUp: { en: 'LOOKING UP', 'zh-CN': '查询中' },
+  cardExample: { en: 'EXAMPLE', 'zh-CN': '例句' },
+  cardRefreshNeeded: { en: 'Extension was updated. Please refresh this page to continue.', 'zh-CN': '扩展已更新，请刷新此页面以继续。' },
   // Errors
   noProfileError: { en: 'API not configured. Open settings to add your key.', 'zh-CN': '尚未配置 API，请到设置中填入 Key。' },
 };

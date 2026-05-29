@@ -6,6 +6,8 @@ import { TriggerIcon } from './content/TriggerIcon';
 import { TranslationCard } from './content/TranslationCard';
 import { StorageClient } from '~/storage/client';
 import { resolveEffectiveTheme } from '~/ui/themeResolver';
+import { resolveLocale } from '~/i18n';
+import type { Locale } from '~/i18n/strings';
 import type { GlobalSettings } from '~/storage/schema';
 
 export default defineContentScript({
@@ -16,6 +18,7 @@ export default defineContentScript({
     const client = new StorageClient();
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
     let themeSetting: GlobalSettings['theme'] = 'auto';
+    let locale: Locale = 'en';
 
     const applyTheme = () => {
       mount.setTheme(resolveEffectiveTheme(themeSetting, mql.matches));
@@ -43,6 +46,7 @@ export default defineContentScript({
         h(TranslationCard, {
           text: info.text,
           rect: info.rect,
+          locale,
           onClose: () => {
             state = 'idle';
             mount.unmount();
@@ -66,6 +70,7 @@ export default defineContentScript({
 
       const data = await client.loadAppData();
       themeSetting = data.settings.theme;
+      locale = resolveLocale(data.settings.uiLanguage);
       applyTheme();
 
       if (data.settings.triggerMode === 'icon') {

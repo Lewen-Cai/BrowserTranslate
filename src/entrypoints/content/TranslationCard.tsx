@@ -6,24 +6,27 @@ import { computeCardVerticalLayout } from './cardLayout';
 import { classifySelection, type LookupMode } from '~/core/dictionary/classify';
 import { parseDictionaryEntry } from '~/core/dictionary/parse';
 import { DictionaryView } from './DictionaryView';
+import { t } from '~/i18n';
+import type { Locale } from '~/i18n/strings';
 
 interface Props {
   text: string;
   rect: DOMRect;
+  locale: Locale;
   onClose: () => void;
 }
 
 const CARD_WIDTH = 360;
 let requestSeq = 0;
 
-function friendlyError(raw: string): string {
+function friendlyError(raw: string, locale: Locale): string {
   if (/context invalidated|extension context/i.test(raw)) {
-    return 'Extension was updated. Please refresh this page to continue.';
+    return t('cardRefreshNeeded', locale);
   }
   return raw;
 }
 
-export function TranslationCard({ text, rect, onClose }: Props) {
+export function TranslationCard({ text, rect, locale, onClose }: Props) {
   const [translated, setTranslated] = useState('');
   const [streaming, setStreaming] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +73,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
           full += msg.delta;
           setTranslated(full);
         } else if (msg.type === 'translate:error') {
-          setError(friendlyError(msg.message));
+          setError(friendlyError(msg.message, locale));
           setStreaming(false);
           return;
         } else {
@@ -80,7 +83,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
       }
     } catch (e) {
       if (runGeneration.current !== gen) return;
-      setError(friendlyError((e as Error).message));
+      setError(friendlyError((e as Error).message, locale));
       setStreaming(false);
     }
   }
@@ -131,13 +134,13 @@ export function TranslationCard({ text, rect, onClose }: Props) {
                 class={mode === 'translate' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
                 onClick={() => switchMode('translate')}
               >
-                Translate
+                {t('cardModeTranslate', locale)}
               </button>
               <button
                 class={mode === 'dictionary' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
                 onClick={() => switchMode('dictionary')}
               >
-                Define
+                {t('cardModeDefine', locale)}
               </button>
             </div>
             <span class="bt-card-brand-mark">BrowserTranslate</span>
@@ -155,15 +158,15 @@ export function TranslationCard({ text, rect, onClose }: Props) {
           </div>
         ) : mode === 'dictionary' && streaming ? (
           <span class="bt-card-loading">
-            <Loader2 size={11} class="animate-spin" /> LOOKING UP
+            <Loader2 size={11} class="animate-spin" /> {t('cardLookingUp', locale)}
           </span>
         ) : dictEntry ? (
-          <DictionaryView entry={dictEntry} />
+          <DictionaryView entry={dictEntry} locale={locale} />
         ) : (
           <div class="bt-card-text">
             {translated || (streaming && (
               <span class="bt-card-loading">
-                <Loader2 size={11} class="animate-spin" /> TRANSLATING
+                <Loader2 size={11} class="animate-spin" /> {t('cardTranslating', locale)}
               </span>
             ))}
           </div>

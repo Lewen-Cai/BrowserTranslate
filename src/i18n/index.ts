@@ -1,7 +1,7 @@
 import { useAppStore } from '~/storage/store';
 import { STRINGS, type Locale, type StringKey } from './strings';
 
-function resolveLocale(setting: string): Locale {
+export function resolveLocale(setting: string): Locale {
   if (setting === 'zh-CN' || setting === 'en') return setting;
   // 'auto' — derive from browser
   const browser = (typeof navigator !== 'undefined' ? navigator.language : 'en').toLowerCase();
