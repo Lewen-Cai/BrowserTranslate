@@ -19,7 +19,9 @@ All notable changes will be documented here. Format follows [Keep a Changelog](h
 - Translate vs. dictionary mode is now decided automatically by the model in a
   single streaming pass, replacing the client-side guess. The manual
   Translate/Define toggle on the card and the streaming on/off setting have been
-  removed (translations always stream).
+  removed (translations always stream, revealed progressively in the card).
+- Dictionary entries now include the term's formal translation in your language,
+  shown separately from the explanatory definition.
 
 ## [0.1.3] — 2026-05-29
 
