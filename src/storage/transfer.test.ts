@@ -8,6 +8,7 @@ function sample(): AppData {
   d.api.baseUrl = 'https://api.example.com/v1';
   d.api.apiKey = 'sk-secret';
   d.api.model = 'gpt-4o';
+  d.api.customHeaders = { Authorization: 'Bearer sk-header-secret' };
   d.api.savedConfigs = { openai: { baseUrl: 'https://api.openai.com/v1', apiKey: 'sk-openai', model: 'gpt-4o' } };
   d.settings.targetLanguage = 'en';
   d.promptTemplates.push({
@@ -37,6 +38,16 @@ describe('exportAppData', () => {
     expect(file.data.promptTemplates.every((t) => !t.isBuiltin)).toBe(true);
     expect(file.data.promptTemplates.map((t) => t.id)).toContain('user-1');
   });
+
+  it('strips customHeaders by default (they can carry secrets)', () => {
+    const file = exportAppData(sample(), { includeKeys: false }, 123);
+    expect(file.data.api.customHeaders).toBeUndefined();
+  });
+
+  it('keeps customHeaders when includeKeys is true', () => {
+    const file = exportAppData(sample(), { includeKeys: true }, 123);
+    expect(file.data.api.customHeaders).toEqual({ Authorization: 'Bearer sk-header-secret' });
+  });
 });
 
 describe('importAppData', () => {
@@ -47,6 +58,14 @@ describe('importAppData', () => {
 
   it('rejects an unrecognized format', () => {
     expect(() => importAppData({ format: 'something-else', version: 1, data: {} })).toThrow(ImportError);
+  });
+
+  it('rejects a file with an unsupported version', () => {
+    expect(() => importAppData({ format: EXPORT_FORMAT, version: 99, data: {} })).toThrow(ImportError);
+  });
+
+  it('rejects a file missing the data object', () => {
+    expect(() => importAppData({ format: EXPORT_FORMAT, version: 1 })).toThrow(ImportError);
   });
 
   it('round-trips settings, api, and user templates; builtins re-seeded', () => {

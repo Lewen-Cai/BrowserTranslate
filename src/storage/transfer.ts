@@ -1,4 +1,4 @@
-import type { AppData, ApiSettings, GlobalSettings, PromptTemplate } from './schema';
+import type { AppData, ApiSettings, GlobalSettings, PromptTemplate, ProviderSlot } from './schema';
 import { createDefaultAppData } from './defaults';
 import { migrateAppData } from './migrations';
 
@@ -36,10 +36,11 @@ export function exportAppData(
   const api: ApiSettings = { ...data.api };
   if (!opts.includeKeys) {
     api.apiKey = '';
+    api.customHeaders = undefined;
     if (api.savedConfigs) {
       const stripped: NonNullable<ApiSettings['savedConfigs']> = {};
       for (const [slot, cfg] of Object.entries(api.savedConfigs)) {
-        if (cfg) stripped[slot as keyof typeof stripped] = { ...cfg, apiKey: '' };
+        if (cfg) stripped[slot as ProviderSlot] = { ...cfg, apiKey: '' };
       }
       api.savedConfigs = stripped;
     }
@@ -90,5 +91,9 @@ export function importAppData(parsed: unknown): AppData {
 
   // Reuse the integrity-repair pass: re-seeds builtins, repairs orphaned refs,
   // fills provider defaults, seeds savedConfigs.
-  return migrateAppData(candidate);
+  try {
+    return migrateAppData(candidate);
+  } catch (e) {
+    throw new ImportError(`Settings file could not be applied: ${String(e)}`);
+  }
 }
