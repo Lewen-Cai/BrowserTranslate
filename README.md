@@ -32,7 +32,7 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - Translation cache (configurable TTL)
 - Translation history with search
 - Light / dark theme (follows system)
-- UI available in English and Simplified Chinese
+- UI available in 8 languages (Simplified/Traditional Chinese, English, Japanese, Korean, Spanish, French, German); auto-detects browser locale
 
 ## Install
 
