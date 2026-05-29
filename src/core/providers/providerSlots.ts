@@ -6,7 +6,7 @@ export function activeSlot(api: ApiSettings): ProviderSlot {
 }
 
 export function defaultConfigForSlot(slot: ProviderSlot): ProviderConfig {
-  const baseUrl = slot === 'openai' || slot === 'deepseek' ? CLOUD_PRESETS[slot].baseUrl : '';
+  const baseUrl = slot === 'local' ? '' : (CLOUD_PRESETS[slot].endpoints[0]?.baseUrl ?? '');
   return { baseUrl, apiKey: '', model: '' };
 }
 

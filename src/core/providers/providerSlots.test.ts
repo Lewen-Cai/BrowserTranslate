@@ -32,6 +32,9 @@ describe('defaultConfigForSlot', () => {
     expect(defaultConfigForSlot('custom')).toEqual({ baseUrl: '', apiKey: '', model: '' });
     expect(defaultConfigForSlot('local')).toEqual({ baseUrl: '', apiKey: '', model: '' });
   });
+  it('uses the first endpoint (China) for a multi-endpoint provider', () => {
+    expect(defaultConfigForSlot('moonshot')).toEqual({ baseUrl: 'https://api.moonshot.cn/v1', apiKey: '', model: '' });
+  });
 });
 
 describe('applySlot', () => {

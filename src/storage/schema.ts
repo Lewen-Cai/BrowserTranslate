@@ -15,7 +15,16 @@ export interface ApiSettings {
   promptTemplateId: string;
   customHeaders?: Record<string, string>;
   providerType: 'cloud' | 'local';
-  cloudProvider: 'openai' | 'deepseek' | 'custom';
+  cloudProvider:
+    | 'openai'
+    | 'deepseek'
+    | 'moonshot'
+    | 'zhipu'
+    | 'dashscope'
+    | 'siliconflow'
+    | 'openrouter'
+    | 'mistral'
+    | 'custom';
   savedConfigs?: Partial<Record<ProviderSlot, ProviderConfig>>;
 }
 
