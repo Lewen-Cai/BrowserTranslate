@@ -62,12 +62,24 @@ export function ApiSettingsPage() {
           />
         )}
 
+        {isCloud && CLOUD_PRESETS[api.cloudProvider].endpoints.length > 1 && (
+          <Select
+            label={t('cloudEndpoint')}
+            value={api.baseUrl}
+            options={CLOUD_PRESETS[api.cloudProvider].endpoints.map((ep) => ({
+              value: ep.baseUrl,
+              label: ep.label,
+            }))}
+            onChange={(e) => updateApi(rememberActive({ ...api, baseUrl: (e.target as HTMLSelectElement).value }))}
+          />
+        )}
+
         <Input
           label={t('baseUrl')}
           value={api.baseUrl}
           disabled={baseUrlLocked}
           mono
-          hint="OpenAI · DeepSeek · Moonshot · Groq · OpenRouter · Ollama"
+          hint="OpenAI · DeepSeek · Moonshot · Zhipu · Qwen · SiliconFlow · OpenRouter · Mistral · Ollama"
           onInput={(e) => updateApi(rememberActive({ ...api, baseUrl: (e.target as HTMLInputElement).value }))}
         />
 

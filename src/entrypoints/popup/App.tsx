@@ -154,6 +154,18 @@ export function App() {
             />
           )}
 
+          {isCloud && CLOUD_PRESETS[cloudProvider].endpoints.length > 1 && (
+            <Select
+              label={t('cloudEndpoint')}
+              value={draft.baseUrl}
+              options={CLOUD_PRESETS[cloudProvider].endpoints.map((ep) => ({
+                value: ep.baseUrl,
+                label: ep.label,
+              }))}
+              onChange={(e) => setDraftField('baseUrl', (e.target as HTMLSelectElement).value)}
+            />
+          )}
+
           <Input
             label={t('baseUrl')}
             value={draft.baseUrl}
