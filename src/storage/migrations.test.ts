@@ -104,6 +104,36 @@ describe('migrateAppData', () => {
     expect(out.api.providerType).toBe('cloud');
     expect(out.api.cloudProvider).toBe('openai');
   });
+
+  it('preserves a new-provider cloudProvider value (e.g. moonshot)', () => {
+    const input: AppData = {
+      version: APP_DATA_VERSION,
+      api: {
+        baseUrl: 'https://api.moonshot.cn/v1', apiKey: 'k', model: 'm',
+        promptTemplateId: 'builtin-general',
+        providerType: 'cloud',
+        cloudProvider: 'moonshot',
+      },
+      settings: baseSettings,
+      promptTemplates: BUILTIN_TEMPLATES.map((t) => ({ ...t })),
+    };
+    expect(migrateAppData(input).api.cloudProvider).toBe('moonshot');
+  });
+
+  it('keeps a new-provider value even when baseUrl would not infer it', () => {
+    const input: AppData = {
+      version: APP_DATA_VERSION,
+      api: {
+        baseUrl: 'https://my-proxy.example/v1', apiKey: 'k', model: 'm',
+        promptTemplateId: 'builtin-general',
+        providerType: 'cloud',
+        cloudProvider: 'mistral',
+      },
+      settings: baseSettings,
+      promptTemplates: BUILTIN_TEMPLATES.map((t) => ({ ...t })),
+    };
+    expect(migrateAppData(input).api.cloudProvider).toBe('mistral');
+  });
 });
 
 describe('savedConfigs seeding', () => {

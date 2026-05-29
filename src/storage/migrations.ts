@@ -1,7 +1,7 @@
 import { APP_DATA_VERSION, type AppData } from './schema';
 import type { ProviderConfig, ProviderSlot } from './schema';
 import { BUILTIN_TEMPLATES } from '~/core/prompt/builtin';
-import { inferCloudProvider } from '~/core/providers/presets';
+import { inferCloudProvider, isCloudProvider } from '~/core/providers/presets';
 import { activeSlot } from '~/core/providers/providerSlots';
 
 /**
@@ -24,20 +24,16 @@ export function migrateAppData(input: AppData): AppData {
 function fillApiProviderDefaults(data: AppData): AppData {
   const api = data.api;
   const providerTypeValid = api.providerType === 'cloud' || api.providerType === 'local';
-  const cloudProviderValid =
-    api.cloudProvider === 'openai' ||
-    api.cloudProvider === 'deepseek' ||
-    api.cloudProvider === 'custom';
+  const cloudProviderValid = isCloudProvider(api.cloudProvider ?? '');
   if (providerTypeValid && cloudProviderValid) return data;
   return {
     ...data,
     api: {
       ...api,
       providerType: api.providerType === 'local' ? 'local' : 'cloud',
-      cloudProvider:
-        api.cloudProvider === 'openai' || api.cloudProvider === 'deepseek' || api.cloudProvider === 'custom'
-          ? api.cloudProvider
-          : inferCloudProvider(api.baseUrl),
+      cloudProvider: isCloudProvider(api.cloudProvider ?? '')
+        ? api.cloudProvider
+        : inferCloudProvider(api.baseUrl),
     },
   };
 }
