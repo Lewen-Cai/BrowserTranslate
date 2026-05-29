@@ -32,10 +32,10 @@ describe('computeCacheKey', () => {
     expect(a).not.toBe(b);
   });
 
-  it('separates dictionary from translation via the builtin-dictionary id', async () => {
-    const translation = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-general', targetLang: 'zh-CN' });
-    const dictionary = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-dictionary', targetLang: 'zh-CN' });
-    expect(translation).not.toBe(dictionary);
+  it('differs when promptTemplateId changes', async () => {
+    const a = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-general', targetLang: 'zh-CN' });
+    const b = await computeCacheKey({ text: 'cat', model: 'm', promptTemplateId: 'builtin-academic', targetLang: 'zh-CN' });
+    expect(a).not.toBe(b);
   });
 
   it('produces hex-only output', async () => {
