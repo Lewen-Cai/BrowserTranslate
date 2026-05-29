@@ -27,6 +27,8 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - Remembers each provider's key + model — switching providers restores them, no re-typing
 - 4 built-in prompt templates + unlimited custom templates
 - Auto status check on popup open (pings endpoint and model availability)
+- Dictionary mode for single words — auto-detects short selections and shows pronunciation, part of speech, senses, and example; manual Translate/Define toggle on the card
+- Settings export / import (Settings → Data) — save your config as JSON, import it on another device; API keys excluded by default (opt-in to include them)
 - Translation cache (configurable TTL)
 - Translation history with search
 - Light / dark theme (follows system)
