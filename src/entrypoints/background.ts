@@ -89,7 +89,7 @@ async function handleTranslate(
     const sourceLang = msg.sourceLang ?? detectLanguage(msg.text);
 
     let cacheKey: string | undefined;
-    if (data.settings.cacheEnabled && !msg.followUp) {
+    if (data.settings.cacheEnabled) {
       cacheKey = await computeCacheKey({
         text: msg.text, model: api.model,
         promptTemplateId: template.id, targetLang,
@@ -139,7 +139,7 @@ async function handleTranslate(
     if (cacheKey && full) {
       await new CacheStore(client, data.settings.cacheTTLDays).set(cacheKey, full);
     }
-    if (data.settings.historyEnabled && full && !msg.followUp) {
+    if (data.settings.historyEnabled && full) {
       await new HistoryStore(client, data.settings.historyMaxEntries).add({
         id: msg.requestId,
         sourceText: msg.text,

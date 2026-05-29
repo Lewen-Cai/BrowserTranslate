@@ -5,7 +5,6 @@ export interface TranslateRequest {
   sourceLang?: string;
   targetLang?: string;           // omit → use global setting
   context?: { url?: string; title?: string };
-  followUp?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
 
 export type TranslateResponse =
