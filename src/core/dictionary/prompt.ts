@@ -7,9 +7,10 @@ export const DICTIONARY_SPEC =
   'When the selection is a single word, a short term, an idiom, or a proper noun worth a ' +
   'dictionary entry, respond with ONLY a single JSON object — no markdown, no code fences, ' +
   'no prose — with this exact shape:\n' +
-  '{"headword": string, "phonetic": {"us": string, "uk": string} | null, "partOfSpeech": string, "senses": string[], "example": {"source": string, "target": string} | null}\n' +
+  '{"headword": string, "translation": string, "phonetic": {"us": string, "uk": string} | null, "partOfSpeech": string, "senses": string[], "example": {"source": string, "target": string} | null}\n' +
   'Field rules:\n' +
   '- headword: the term itself, in its original language.\n' +
+  '- translation: the term\'s established or natural translation in the target language (the formal equivalent of the headword), distinct from the explanatory senses. Empty string if the target language is the same as the headword\'s language, or if no sensible translation exists.\n' +
   '- phonetic: provide US and UK IPA in slashes ONLY when the headword is a SINGLE English/Latin word ' +
   '(e.g. {"us": "/ˈkʌlər/", "uk": "/ˈkʌlə/"}). Set phonetic to null for multi-word phrases, proper nouns, ' +
   'and any non-Latin script (Chinese/Japanese/Korean) — never add pinyin or romanization.\n' +

@@ -28,6 +28,7 @@ export function DictionaryView({ entry, locale }: { entry: DictionaryEntry; loca
           )}
         </div>
       )}
+      {entry.translation && <div class="bt-card-dict-translation">{entry.translation}</div>}
       {entry.partOfSpeech && <span class="bt-card-dict-pos">{entry.partOfSpeech}</span>}
       {entry.senses.length > 0 && (
         <ol class="bt-card-dict-senses">

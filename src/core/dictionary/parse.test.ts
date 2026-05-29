@@ -63,4 +63,43 @@ describe('parseDictionaryEntry', () => {
     const e = parseDictionaryEntry(JSON.stringify({ headword: 'x', senses: ['real', '', '  '], example: null }));
     expect(e!.senses).toEqual(['real']);
   });
+
+  it('parses a translation field into entry.translation', () => {
+    const e = parseDictionaryEntry(JSON.stringify({
+      headword: 'Uniform Cost Search',
+      translation: '一致代价搜索',
+      phonetic: null,
+      partOfSpeech: '',
+      senses: ['一种按路径代价从低到高扩展节点的图搜索算法。'],
+      example: null,
+    }));
+    expect(e).not.toBeNull();
+    expect(e!.translation).toBe('一致代价搜索');
+  });
+
+  it('still parses an entry without a translation field (translation is undefined)', () => {
+    const e = parseDictionaryEntry(JSON.stringify({
+      headword: 'serendipity',
+      phonetic: { us: '/ˌsɛrənˈdɪpɪti/', uk: '/ˌsɛrənˈdɪpɪti/' },
+      partOfSpeech: '名词',
+      senses: ['意外发现美好事物的能力或现象。'],
+      example: null,
+    }));
+    expect(e).not.toBeNull();
+    expect(e!.translation).toBeUndefined();
+  });
+
+  it('parses an entry with only translation + headword (empty senses, no example) — loosened guard', () => {
+    const e = parseDictionaryEntry(JSON.stringify({
+      headword: 'Uniform Cost Search',
+      translation: '一致代价搜索',
+      phonetic: null,
+      partOfSpeech: '',
+      senses: [],
+      example: null,
+    }));
+    expect(e).not.toBeNull();
+    expect(e!.translation).toBe('一致代价搜索');
+    expect(e!.senses).toEqual([]);
+  });
 });

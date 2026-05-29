@@ -8,6 +8,8 @@ export interface Phonetic {
 /** A structured dictionary entry rendered by the card's DictionaryView. */
 export interface DictionaryEntry {
   headword: string;
+  /** The term's formal translation in the target language (distinct from senses). */
+  translation?: string;
   phonetic?: Phonetic;
   partOfSpeech?: string;
   senses: string[];
@@ -44,6 +46,9 @@ export function parseDictionaryEntry(raw: string): DictionaryEntry | null {
 
   const entry: DictionaryEntry = { headword, senses };
 
+  const translation = typeof o.translation === 'string' ? o.translation.trim() : '';
+  if (translation) entry.translation = translation;
+
   if (o.phonetic && typeof o.phonetic === 'object' && !Array.isArray(o.phonetic)) {
     const p = o.phonetic as Record<string, unknown>;
     const us = typeof p.us === 'string' ? p.us.trim() : '';
@@ -60,7 +65,7 @@ export function parseDictionaryEntry(raw: string): DictionaryEntry | null {
   }
 
   // Too thin to justify the structured layout — let the caller fall back to text.
-  if (entry.senses.length === 0 && !entry.example) return null;
+  if (entry.senses.length === 0 && !entry.example && !entry.translation) return null;
 
   return entry;
 }

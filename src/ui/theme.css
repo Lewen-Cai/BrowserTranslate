@@ -221,6 +221,12 @@ html, body {
   letter-spacing: 0.06em;
   color: rgb(var(--ap-brand));
 }
+.bt-card-dict-translation {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(var(--ap-brand));
+}
 .bt-card-dict-pos {
   display: inline-block;
   margin-top: 6px;
