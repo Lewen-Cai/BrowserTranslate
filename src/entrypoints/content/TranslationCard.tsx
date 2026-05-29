@@ -3,6 +3,7 @@ import { X, AlertCircle, Loader2 } from '~/ui/icons';
 import { streamTranslate, abortTranslate } from '~/messaging/client';
 import { computeIconPosition, ICON_SIZE } from './TriggerIcon';
 import { computeCardVerticalLayout } from './cardLayout';
+import { classifySelection, type LookupMode } from '~/core/dictionary/classify';
 
 interface Props {
   text: string;
@@ -26,18 +27,26 @@ export function TranslationCard({ text, rect, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);   // drives open animation
   const currentReqId = useRef<string>('');
+  const [mode, setMode] = useState<LookupMode>(() => classifySelection(text));
 
   useEffect(() => {
     // Trigger the open animation after first paint.
     const id = window.requestAnimationFrame(() => setVisible(true));
-    void runInitial();
+    void run(mode);
     return () => {
       window.cancelAnimationFrame(id);
       if (currentReqId.current) abortTranslate(currentReqId.current);
     };
   }, []); // intentionally run on mount only
 
-  async function runInitial() {
+  function switchMode(next: LookupMode) {
+    if (next === mode) return;
+    if (currentReqId.current) abortTranslate(currentReqId.current);
+    setMode(next);
+    void run(next);
+  }
+
+  async function run(activeMode: LookupMode) {
     setTranslated('');
     setError(null);
     setStreaming(true);
@@ -49,6 +58,7 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         type: 'translate',
         requestId: reqId,
         text,
+        mode: activeMode,
         context: { url: location.href, title: document.title },
       })) {
         if (msg.type === 'translate:chunk') {
@@ -105,7 +115,20 @@ export function TranslationCard({ text, rect, onClose }: Props) {
         <div class="bt-card-strip" />
         <div class="bt-card-header-content">
           <div class="bt-card-title-row">
-            <span class="bt-card-mono-label">TRANSLATION</span>
+            <div class="bt-card-modes">
+              <button
+                class={mode === 'translate' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
+                onClick={() => switchMode('translate')}
+              >
+                Translate
+              </button>
+              <button
+                class={mode === 'dictionary' ? 'bt-card-mode-btn bt-card-mode-active' : 'bt-card-mode-btn'}
+                onClick={() => switchMode('dictionary')}
+              >
+                Define
+              </button>
+            </div>
             <span class="bt-card-brand-mark">BrowserTranslate</span>
           </div>
           <button onClick={onClose} class="bt-card-close" aria-label="Close">
