@@ -2,6 +2,23 @@
 
 All notable changes will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.1.3] — 2026-05-29
+
+### Added
+- Dictionary mode: selecting a single word or short term shows a structured
+  dictionary entry (IPA pronunciation for English/Latin words, part of speech,
+  numbered senses, and an example) instead of a full translation. The mode is
+  auto-detected from the selection, with a manual Translate/Define toggle on the
+  card. Uses your configured model — no third-party dictionary service.
+- Settings export / import (Settings → Data): back up or transfer your
+  configuration as a JSON file. API keys are excluded by default (opt-in
+  checkbox to include them). History and cache are not exported.
+
+### Fixed
+- Orphaned content scripts (after the extension reloads or updates while a tab
+  is open) now show a "refresh this page" message instead of a raw
+  "Cannot read properties of undefined" error.
+
 ## [0.1.2] — 2026-05-29
 
 ### Added
