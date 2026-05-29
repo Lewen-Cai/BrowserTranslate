@@ -20,7 +20,7 @@ const LANGUAGES = [
   { value: 'de', label: 'Deutsch' },
 ];
 
-const UI_LANGUAGES: { value: string; label: string }[] = [
+const UI_LANGUAGES: { value: Exclude<GlobalSettings['uiLanguage'], 'auto'>; label: string }[] = [
   { value: 'zh-CN', label: '简体中文' },
   { value: 'zh-TW', label: '繁體中文' },
   { value: 'en', label: 'English' },
