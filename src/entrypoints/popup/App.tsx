@@ -50,9 +50,22 @@ export function App() {
   const [showKey, setShowKey] = useState(false);
   const [draft, setDraft] = useState<ApiSettings>(api);
   const [pingNonce, setPingNonce] = useState(0);
+  const [pageOn, setPageOn] = useState(false);
 
   // Initial load
   useEffect(() => { void load(); }, [load]);
+
+  // Query the active tab's current page-translation state to label the toggle.
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const id = tabs[0]?.id;
+      if (id === undefined) return;
+      chrome.tabs.sendMessage(id, { type: 'page:query' }, (resp?: { translated: boolean }) => {
+        if (chrome.runtime.lastError) return; // no content script on this page
+        if (resp) setPageOn(resp.translated);
+      });
+    });
+  }, []);
 
   // Sync draft whenever the underlying api object changes (e.g. on first load).
   useEffect(() => {
@@ -60,6 +73,17 @@ export function App() {
   }, [api]);
 
   function openOptions() { chrome.runtime.openOptionsPage(); window.close(); }
+
+  function togglePage() {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const id = tabs[0]?.id;
+      if (id === undefined) return;
+      chrome.tabs.sendMessage(id, { type: 'page:toggle' }, (resp?: { translated: boolean }) => {
+        if (chrome.runtime.lastError) return;
+        if (resp) setPageOn(resp.translated);
+      });
+    });
+  }
 
   if (!loaded) {
     return <div class="p-4 text-2xs font-mono text-ap-subtle">{t('loading').toUpperCase()}</div>;
@@ -242,6 +266,17 @@ export function App() {
             mono
             onInput={(e) => updateSettings({ hotkey: (e.target as HTMLInputElement).value })}
           />
+          <Input
+            label={t('fullPageHotkey')}
+            value={settings.fullPageHotkey}
+            mono
+            onInput={(e) => updateSettings({ fullPageHotkey: (e.target as HTMLInputElement).value })}
+          />
+          <div class="pt-1">
+            <Button variant="primary" size="sm" onClick={togglePage}>
+              {pageOn ? t('showOriginal') : t('translatePage')}
+            </Button>
+          </div>
         </div>
       </section>
     </div>
