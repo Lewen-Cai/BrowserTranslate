@@ -151,9 +151,36 @@ export function App() {
         )}
       </div>
 
-      {/* 01 API */}
+      {/* 01 Translation */}
       <section class="px-4 pt-3 pb-3 border-b border-ap-border">
-        <SectionHeader number="01" label={t('sectionApi').toUpperCase()} />
+        <SectionHeader number="01" label={t('sectionTranslation').toUpperCase()} />
+        <div class="space-y-2.5">
+          <Select
+            label={t('targetLanguage')}
+            value={settings.targetLanguage}
+            options={LANGUAGES}
+            onChange={(e) => updateSettings({ targetLanguage: (e.target as HTMLSelectElement).value })}
+          />
+          <Select
+            label={t('triggerMode')}
+            value={settings.triggerMode}
+            options={[
+              { value: 'icon', label: t('iconAfterSelection') },
+              { value: 'hotkey', label: t('hotkeyOnly') },
+            ]}
+            onChange={(e) => updateSettings({ triggerMode: (e.target as HTMLSelectElement).value as 'icon' | 'hotkey' })}
+          />
+          <div class="pt-1">
+            <Button variant="primary" size="sm" onClick={togglePage}>
+              {pageOn ? t('showOriginal') : t('translatePage')}
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 02 API */}
+      <section class="px-4 pt-3 pb-4">
+        <SectionHeader number="02" label={t('sectionApi').toUpperCase()} />
         <div class="space-y-2.5">
           <SegmentedControl<'cloud' | 'local'>
             label={t('providerType')}
@@ -236,45 +263,6 @@ export function App() {
           <div class="pt-1">
             <Button variant="primary" size="sm" onClick={onApply} disabled={!dirty}>
               {t('applyConfig')}
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* 02 Translation */}
-      <section class="px-4 pt-3 pb-4">
-        <SectionHeader number="02" label={t('sectionTranslation').toUpperCase()} />
-        <div class="space-y-2.5">
-          <Select
-            label={t('targetLanguage')}
-            value={settings.targetLanguage}
-            options={LANGUAGES}
-            onChange={(e) => updateSettings({ targetLanguage: (e.target as HTMLSelectElement).value })}
-          />
-          <Select
-            label={t('triggerMode')}
-            value={settings.triggerMode}
-            options={[
-              { value: 'icon', label: t('iconAfterSelection') },
-              { value: 'hotkey', label: t('hotkeyOnly') },
-            ]}
-            onChange={(e) => updateSettings({ triggerMode: (e.target as HTMLSelectElement).value as 'icon' | 'hotkey' })}
-          />
-          <Input
-            label={t('hotkey')}
-            value={settings.hotkey}
-            mono
-            onInput={(e) => updateSettings({ hotkey: (e.target as HTMLInputElement).value })}
-          />
-          <Input
-            label={t('fullPageHotkey')}
-            value={settings.fullPageHotkey}
-            mono
-            onInput={(e) => updateSettings({ fullPageHotkey: (e.target as HTMLInputElement).value })}
-          />
-          <div class="pt-1">
-            <Button variant="primary" size="sm" onClick={togglePage}>
-              {pageOn ? t('showOriginal') : t('translatePage')}
             </Button>
           </div>
         </div>
