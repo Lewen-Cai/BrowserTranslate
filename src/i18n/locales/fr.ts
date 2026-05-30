@@ -57,6 +57,13 @@ export const fr: Record<StringKey, string> = {
   hotkeyHint: 'Fonctionne dans les deux modes. Actif dans tous les onglets.',
   iconAfterSelection: 'Icône après sélection (par défaut)',
   hotkeyOnly: 'Raccourci uniquement — sans icône',
+  // Full-page translation
+  translatePage: 'Traduire la page',
+  showOriginal: "Afficher l'original",
+  translateFailed: 'Échec de la traduction',
+  retry: 'Réessayer',
+  noTranslationNeeded: 'Déjà dans la langue cible',
+  fullPageHotkey: 'Raccourci page entière',
   // Behavior
   cacheTranslations: 'Mettre les traductions en cache',
   cacheDesc: 'Réutilise les traductions identiques pour économiser des tokens',

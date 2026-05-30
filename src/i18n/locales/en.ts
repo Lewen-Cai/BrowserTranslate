@@ -57,6 +57,13 @@ export const en = {
   hotkeyHint: 'Works in both modes. Active in any tab.',
   iconAfterSelection: 'Icon after selection (default)',
   hotkeyOnly: 'Hotkey only — no icon',
+  // Full-page translation
+  translatePage: 'Translate page',
+  showOriginal: 'Show original',
+  translateFailed: 'Translation failed',
+  retry: 'Retry',
+  noTranslationNeeded: 'Already in your target language',
+  fullPageHotkey: 'Full-page hotkey',
   // Behavior
   cacheTranslations: 'Cache translations',
   cacheDesc: 'Reuse exact-match translations to save tokens',

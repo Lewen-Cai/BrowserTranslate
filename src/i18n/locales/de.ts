@@ -57,6 +57,13 @@ export const de: Record<StringKey, string> = {
   hotkeyHint: 'Funktioniert in beiden Modi. In jedem Tab aktiv.',
   iconAfterSelection: 'Symbol nach Auswahl (Standard)',
   hotkeyOnly: 'Nur Tastenkürzel — kein Symbol',
+  // Full-page translation
+  translatePage: 'Seite übersetzen',
+  showOriginal: 'Original anzeigen',
+  translateFailed: 'Übersetzung fehlgeschlagen',
+  retry: 'Erneut versuchen',
+  noTranslationNeeded: 'Bereits in der Zielsprache',
+  fullPageHotkey: 'Tastenkürzel ganze Seite',
   // Behavior
   cacheTranslations: 'Übersetzungen zwischenspeichern',
   cacheDesc: 'Identische Übersetzungen wiederverwenden, um Tokens zu sparen',

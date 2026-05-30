@@ -57,6 +57,13 @@ export const zhTW: Record<StringKey, string> = {
   hotkeyHint: '任何頁面都能用，兩種觸發方式下都有效。',
   iconAfterSelection: '選取文字後顯示圖示（預設）',
   hotkeyOnly: '僅快速鍵觸發 — 不顯示圖示',
+  // Full-page translation
+  translatePage: '翻譯此頁',
+  showOriginal: '顯示原文',
+  translateFailed: '翻譯失敗',
+  retry: '重試',
+  noTranslationNeeded: '已是目標語言，無需翻譯',
+  fullPageHotkey: '整頁翻譯熱鍵',
   // Behavior
   cacheTranslations: '快取譯文',
   cacheDesc: '相同文字直接重用快取，節省 token',

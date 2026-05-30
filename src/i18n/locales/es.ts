@@ -57,6 +57,13 @@ export const es: Record<StringKey, string> = {
   hotkeyHint: 'Funciona en ambos modos. Activo en cualquier pestaña.',
   iconAfterSelection: 'Icono tras seleccionar (predeterminado)',
   hotkeyOnly: 'Solo atajo — sin icono',
+  // Full-page translation
+  translatePage: 'Traducir página',
+  showOriginal: 'Mostrar original',
+  translateFailed: 'Error de traducción',
+  retry: 'Reintentar',
+  noTranslationNeeded: 'Ya está en el idioma de destino',
+  fullPageHotkey: 'Atajo de página completa',
   // Behavior
   cacheTranslations: 'Almacenar traducciones en caché',
   cacheDesc: 'Reutiliza traducciones idénticas para ahorrar tokens',

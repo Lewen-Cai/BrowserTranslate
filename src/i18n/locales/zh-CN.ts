@@ -57,6 +57,13 @@ export const zhCN: Record<StringKey, string> = {
   hotkeyHint: '任何页面都能用，两种触发方式下都有效。',
   iconAfterSelection: '选中文本后显示图标（默认）',
   hotkeyOnly: '仅快捷键触发 — 不显示图标',
+  // Full-page translation
+  translatePage: '翻译此页',
+  showOriginal: '显示原文',
+  translateFailed: '翻译失败',
+  retry: '重试',
+  noTranslationNeeded: '已是目标语言，无需翻译',
+  fullPageHotkey: '整页翻译热键',
   // Behavior
   cacheTranslations: '缓存译文',
   cacheDesc: '相同文本直接复用缓存，省 token',

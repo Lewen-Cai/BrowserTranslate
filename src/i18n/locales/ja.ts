@@ -57,6 +57,13 @@ export const ja: Record<StringKey, string> = {
   hotkeyHint: 'どのページでも、両方の方式で使えます。',
   iconAfterSelection: '選択後にアイコンを表示（デフォルト）',
   hotkeyOnly: 'ショートカットのみ — アイコンなし',
+  // Full-page translation
+  translatePage: 'ページを翻訳',
+  showOriginal: '原文を表示',
+  translateFailed: '翻訳に失敗しました',
+  retry: '再試行',
+  noTranslationNeeded: 'すでに対象言語です',
+  fullPageHotkey: 'ページ全体の翻訳ホットキー',
   // Behavior
   cacheTranslations: '翻訳をキャッシュ',
   cacheDesc: '完全一致の翻訳を再利用してトークンを節約',

@@ -57,6 +57,13 @@ export const ko: Record<StringKey, string> = {
   hotkeyHint: '모든 페이지에서 두 가지 방식 모두 작동합니다.',
   iconAfterSelection: '선택 후 아이콘 표시 (기본값)',
   hotkeyOnly: '단축키만 — 아이콘 없음',
+  // Full-page translation
+  translatePage: '페이지 번역',
+  showOriginal: '원문 표시',
+  translateFailed: '번역 실패',
+  retry: '다시 시도',
+  noTranslationNeeded: '이미 대상 언어입니다',
+  fullPageHotkey: '전체 페이지 단축키',
   // Behavior
   cacheTranslations: '번역 캐시',
   cacheDesc: '동일한 텍스트의 번역을 재사용하여 토큰 절약',
