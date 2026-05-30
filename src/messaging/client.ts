@@ -1,4 +1,11 @@
-import type { PingResponse, Request, TranslateRequest, TranslateResponse } from './types';
+import type {
+  PingResponse,
+  Request,
+  TranslateBatchRequest,
+  TranslateBatchResponse,
+  TranslateRequest,
+  TranslateResponse,
+} from './types';
 
 /**
  * After an extension reload/update, content scripts already running in open tabs
@@ -98,5 +105,36 @@ export function pingApi(): Promise<PingResponse> {
       chrome.runtime.onMessage.removeListener(listener);
       resolve({ type: 'ping:error', requestId, message: 'Timeout (15s)' });
     }, 15000);
+  });
+}
+
+/**
+ * Sends a batch translate request and resolves with the aligned translations.
+ * Rejects on error or timeout. Caller owns a unique requestId.
+ */
+export function translateBatch(
+  req: TranslateBatchRequest,
+  timeoutMs = 60000,
+): Promise<string[]> {
+  assertExtensionContext();
+  return new Promise((resolve, reject) => {
+    const listener = (msg: unknown) => {
+      const m = msg as TranslateBatchResponse;
+      if (m.requestId !== req.requestId) return;
+      if (m.type === 'translate:batch:done') {
+        cleanup();
+        resolve(m.translations);
+      } else if (m.type === 'translate:batch:error') {
+        cleanup();
+        reject(new Error(m.message));
+      }
+    };
+    const timer = setTimeout(() => { cleanup(); reject(new Error('Batch timeout')); }, timeoutMs);
+    function cleanup() {
+      clearTimeout(timer);
+      chrome.runtime.onMessage.removeListener(listener);
+    }
+    chrome.runtime.onMessage.addListener(listener);
+    sendRequest(req);
   });
 }
