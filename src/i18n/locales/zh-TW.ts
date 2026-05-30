@@ -54,7 +54,9 @@ export const zhTW: Record<StringKey, string> = {
   targetLanguage: '目標語言',
   triggerMode: '觸發方式',
   hotkey: '快速鍵',
-  hotkeyHint: '任何頁面都能用，兩種觸發方式下都有效。',
+  hotkeyHint: '僅在觸發模式為「快速鍵」時生效。',
+  keyboardShortcuts: '鍵盤快捷鍵',
+  pressShortcut: '按下快捷鍵…',
   iconAfterSelection: '選取文字後顯示圖示（預設）',
   hotkeyOnly: '僅快速鍵觸發 — 不顯示圖示',
   // Full-page translation

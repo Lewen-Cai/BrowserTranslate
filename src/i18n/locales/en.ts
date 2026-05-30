@@ -54,7 +54,9 @@ export const en = {
   targetLanguage: 'Target language',
   triggerMode: 'Trigger mode',
   hotkey: 'Hotkey',
-  hotkeyHint: 'Works in both modes. Active in any tab.',
+  hotkeyHint: 'Only active when Trigger mode is set to Hotkey.',
+  keyboardShortcuts: 'Keyboard shortcuts',
+  pressShortcut: 'Press shortcut…',
   iconAfterSelection: 'Icon after selection (default)',
   hotkeyOnly: 'Hotkey only — no icon',
   // Full-page translation

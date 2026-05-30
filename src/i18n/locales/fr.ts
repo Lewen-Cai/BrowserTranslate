@@ -54,7 +54,9 @@ export const fr: Record<StringKey, string> = {
   targetLanguage: 'Langue cible',
   triggerMode: 'Mode de déclenchement',
   hotkey: 'Raccourci clavier',
-  hotkeyHint: 'Fonctionne dans les deux modes. Actif dans tous les onglets.',
+  hotkeyHint: 'Actif uniquement lorsque le mode de déclenchement est Raccourci.',
+  keyboardShortcuts: 'Raccourcis clavier',
+  pressShortcut: 'Appuyez sur le raccourci…',
   iconAfterSelection: 'Icône après sélection (par défaut)',
   hotkeyOnly: 'Raccourci uniquement — sans icône',
   // Full-page translation

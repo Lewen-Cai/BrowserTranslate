@@ -54,7 +54,9 @@ export const zhCN: Record<StringKey, string> = {
   targetLanguage: '目标语言',
   triggerMode: '触发方式',
   hotkey: '快捷键',
-  hotkeyHint: '任何页面都能用，两种触发方式下都有效。',
+  hotkeyHint: '仅在触发模式为「快捷键」时生效。',
+  keyboardShortcuts: '键盘快捷键',
+  pressShortcut: '按下快捷键…',
   iconAfterSelection: '选中文本后显示图标（默认）',
   hotkeyOnly: '仅快捷键触发 — 不显示图标',
   // Full-page translation

@@ -54,7 +54,9 @@ export const de: Record<StringKey, string> = {
   targetLanguage: 'Zielsprache',
   triggerMode: 'Auslösemodus',
   hotkey: 'Tastenkürzel',
-  hotkeyHint: 'Funktioniert in beiden Modi. In jedem Tab aktiv.',
+  hotkeyHint: 'Nur aktiv, wenn der Auslösemodus auf Tastenkürzel steht.',
+  keyboardShortcuts: 'Tastaturkürzel',
+  pressShortcut: 'Tastenkürzel drücken…',
   iconAfterSelection: 'Symbol nach Auswahl (Standard)',
   hotkeyOnly: 'Nur Tastenkürzel — kein Symbol',
   // Full-page translation

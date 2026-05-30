@@ -54,7 +54,9 @@ export const ja: Record<StringKey, string> = {
   targetLanguage: '翻訳先の言語',
   triggerMode: 'トリガー方式',
   hotkey: 'ショートカットキー',
-  hotkeyHint: 'どのページでも、両方の方式で使えます。',
+  hotkeyHint: 'トリガーモードが「ショートカット」のときのみ有効。',
+  keyboardShortcuts: 'キーボードショートカット',
+  pressShortcut: 'ショートカットを押す…',
   iconAfterSelection: '選択後にアイコンを表示（デフォルト）',
   hotkeyOnly: 'ショートカットのみ — アイコンなし',
   // Full-page translation

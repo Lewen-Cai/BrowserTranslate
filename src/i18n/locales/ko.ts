@@ -54,7 +54,9 @@ export const ko: Record<StringKey, string> = {
   targetLanguage: '대상 언어',
   triggerMode: '실행 방식',
   hotkey: '단축키',
-  hotkeyHint: '모든 페이지에서 두 가지 방식 모두 작동합니다.',
+  hotkeyHint: "트리거 모드가 '단축키'일 때만 작동합니다.",
+  keyboardShortcuts: '키보드 단축키',
+  pressShortcut: '단축키를 누르세요…',
   iconAfterSelection: '선택 후 아이콘 표시 (기본값)',
   hotkeyOnly: '단축키만 — 아이콘 없음',
   // Full-page translation

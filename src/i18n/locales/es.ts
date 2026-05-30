@@ -54,7 +54,9 @@ export const es: Record<StringKey, string> = {
   targetLanguage: 'Idioma de destino',
   triggerMode: 'Modo de activación',
   hotkey: 'Atajo de teclado',
-  hotkeyHint: 'Funciona en ambos modos. Activo en cualquier pestaña.',
+  hotkeyHint: 'Solo activo cuando el modo de activación es Atajo.',
+  keyboardShortcuts: 'Atajos de teclado',
+  pressShortcut: 'Pulsa el atajo…',
   iconAfterSelection: 'Icono tras seleccionar (predeterminado)',
   hotkeyOnly: 'Solo atajo — sin icono',
   // Full-page translation
