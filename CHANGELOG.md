@@ -2,6 +2,32 @@
 
 All notable changes will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.1.5] — 2026-05-31
+
+### Added
+- Full-page bilingual translation: translate a page's main content in place. The
+  original stays, with the translation inserted under each block, rendered
+  progressively as you scroll (only the visible part is translated). Page chrome —
+  navigation, headers, footers, sidebars — is left alone, and blocks already in
+  your target language are skipped. Toggle it from the popup ("Translate page" /
+  "Show original") or with a hotkey (default Alt+A).
+- Keyboard shortcuts are now set by pressing the keys (press-to-record), in
+  Settings → General.
+
+### Changed
+- Selecting a long passage that is already in your target language now shows a
+  brief "no translation needed" note instead of calling the model. Dictionary
+  lookups of single words are unaffected.
+- The popup leads with translation controls; API configuration moved below.
+  Hotkey settings now live in Settings only, and both the selection and full-page
+  hotkeys are active only in the "Hotkey" trigger mode.
+- Cache default retention is now 7 days (was 30); still configurable.
+
+### Removed
+- Translation history. The cache already avoids re-charging for repeat
+  translations; dropping the stored history reduces what the extension persists
+  and simplifies the app.
+
 ## [0.1.4] — 2026-05-29
 
 ### Added
