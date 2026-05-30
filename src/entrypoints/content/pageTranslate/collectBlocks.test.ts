@@ -68,4 +68,22 @@ describe('collectBlocks', () => {
     const blocks = collectBlocks(document.body, 'zh-CN');
     expect(blocks.map((b) => b.className)).toEqual(['']);
   });
+
+  it('scopes to the main landmark when present', () => {
+    setBody('<p id="out">Outside main, should be skipped.</p><main><p id="in">Inside the main region.</p></main>');
+    const blocks = collectBlocks(document.body, 'zh-CN');
+    expect(blocks.map((b) => b.id)).toEqual(['in']);
+  });
+
+  it('skips page chrome when falling back to body (no main)', () => {
+    setBody('<header><p>Header tagline text here.</p></header><nav><p>Nav links text here.</p></nav><div><p>Body content paragraph text.</p></div><footer><p>Footer text content here.</p></footer>');
+    const blocks = collectBlocks(document.body, 'zh-CN');
+    expect(blocks.map((b) => b.textContent)).toEqual(['Body content paragraph text.']);
+  });
+
+  it('skips chrome even inside the main landmark', () => {
+    setBody('<main><nav><p>In-page TOC nav text.</p></nav><p>Real article body text here.</p></main>');
+    const blocks = collectBlocks(document.body, 'zh-CN');
+    expect(blocks.map((b) => b.textContent)).toEqual(['Real article body text here.']);
+  });
 });

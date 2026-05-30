@@ -18,6 +18,7 @@ function isSkippable(el: Element): boolean {
   if (el.closest('[contenteditable="true"]')) return true;
   if (el.closest('code, pre, script, style, textarea')) return true;
   if (el.closest('.bt-bilingual')) return true;
+  if (el.closest('nav, header, footer, aside, [role="navigation"], [role="banner"], [role="contentinfo"], [role="complementary"]')) return true;
   return false;
 }
 
@@ -44,9 +45,12 @@ function hasDirectText(el: Element): boolean {
  * silently dropped.
  */
 export function collectBlocks(root: ParentNode, targetLang: string): HTMLElement[] {
+  // Prefer the main-content landmark so page chrome is excluded wholesale; fall
+  // back to the given root (chrome is still filtered per-element in isSkippable).
+  const scope: ParentNode = root.querySelector('main, [role="main"]') ?? root;
   const candidates: HTMLElement[] = [];
   const covered = new Set<Element>();
-  const all = root.querySelectorAll<HTMLElement>(BLOCK_SELECTOR);
+  const all = scope.querySelectorAll<HTMLElement>(BLOCK_SELECTOR);
   all.forEach((el) => {
     if (covered.has(el)) return;
     if (isSkippable(el)) return;
