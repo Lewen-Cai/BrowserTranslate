@@ -89,4 +89,39 @@ describe('BilingualInjector', () => {
     injector.teardown();
     expect(() => injector.teardown()).not.toThrow();
   });
+
+  it('inserts inside a table cell instead of after it', () => {
+    document.body.innerHTML = '<table><tr><td id="c">Cell text content here.</td></tr></table>';
+    const cell = document.getElementById('c')!;
+    injector.placeLoading(cell);
+    expect(cell.querySelector('.bt-bilingual')).not.toBeNull();
+    expect(cell.nextElementSibling).toBeNull();
+  });
+
+  it('spans the full row when the parent is a flex container', () => {
+    document.body.innerHTML = '<div style="display:flex"><p id="f">Flex child text content.</p></div>';
+    const block = document.getElementById('f')!;
+    injector.placeLoading(block);
+    const node = block.nextElementSibling as HTMLElement;
+    expect(node.style.flexBasis).toBe('100%');
+    expect(node.style.width).toBe('100%');
+  });
+
+  it('spans all columns when the parent is a grid container', () => {
+    document.body.innerHTML = '<div style="display:grid"><p id="g">Grid child text content.</p></div>';
+    const block = document.getElementById('g')!;
+    injector.placeLoading(block);
+    const node = block.nextElementSibling as HTMLElement;
+    expect(node.style.gridColumn).toBe('1 / -1');
+  });
+
+  it('inserts a normal block as a sibling with no layout overrides', () => {
+    document.body.innerHTML = '<div><p id="n">Normal block text content.</p></div>';
+    const block = document.getElementById('n')!;
+    injector.placeLoading(block);
+    const node = block.nextElementSibling as HTMLElement;
+    expect(node.classList.contains('bt-bilingual')).toBe(true);
+    expect(node.style.flexBasis).toBe('');
+    expect(node.style.gridColumn).toBe('');
+  });
 });
