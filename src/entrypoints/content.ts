@@ -4,9 +4,12 @@ import { createSelectionWatcher, getCurrentParagraphText, type SelectionInfo } f
 import { createHotkeyWatcher, type HotkeyWatcher } from './content/hotkeyWatcher';
 import { TriggerIcon } from './content/TriggerIcon';
 import { TranslationCard } from './content/TranslationCard';
+import { createPageTranslator, type PageTranslator } from './content/pageTranslate';
 import { StorageClient } from '~/storage/client';
 import { resolveEffectiveTheme } from '~/ui/themeResolver';
-import { resolveLocale } from '~/i18n';
+import { isLikelyPassage } from '~/core/selection/isLikelyPassage';
+import { isSameLanguageAsTarget } from '~/core/language/sameLanguage';
+import { resolveLocale, t } from '~/i18n';
 import type { Locale } from '~/i18n/strings';
 import type { GlobalSettings } from '~/storage/schema';
 
@@ -29,6 +32,9 @@ export default defineContentScript({
     let state: 'idle' | 'icon' | 'card' = 'idle';
     let selectionWatcher: { stop: () => void } | null = null;
     let hotkey: HotkeyWatcher | null = null;
+    let pageTranslator: PageTranslator | null = null;
+    let targetLanguage = 'zh-CN';
+    let fullPageHotkey: HotkeyWatcher | null = null;
 
     const showIcon = (info: SelectionInfo) => {
       state = 'icon';
@@ -42,11 +48,13 @@ export default defineContentScript({
 
     const showCard = (info: SelectionInfo) => {
       state = 'card';
+      const skip = isLikelyPassage(info.text) && isSameLanguageAsTarget(info.text, targetLanguage);
       mount.render(
         h(TranslationCard, {
           text: info.text,
           rect: info.rect,
           locale,
+          notice: skip ? t('noTranslationNeeded', locale) : undefined,
           onClose: () => {
             state = 'idle';
             mount.unmount();
@@ -64,6 +72,7 @@ export default defineContentScript({
     async function reattach() {
       selectionWatcher?.stop();
       hotkey?.stop();
+      fullPageHotkey?.stop();
       selectionWatcher = null;
       hotkey = null;
       if (state !== 'idle') hide();
@@ -71,6 +80,7 @@ export default defineContentScript({
       const data = await client.loadAppData();
       themeSetting = data.settings.theme;
       locale = resolveLocale(data.settings.uiLanguage, navigator.language);
+      targetLanguage = data.settings.targetLanguage;
       applyTheme();
 
       if (data.settings.triggerMode === 'icon') {
@@ -91,6 +101,27 @@ export default defineContentScript({
       });
       hk.start();
       hotkey = hk;
+
+      const fph = createHotkeyWatcher(data.settings.fullPageHotkey, () => {
+        togglePageTranslation();
+      });
+      fph.start();
+      fullPageHotkey = fph;
+
+      // Rebuild the translator so it reads the current target language / strings.
+      const wasOn = pageTranslator?.isOn() ?? false;
+      pageTranslator?.disable();
+      pageTranslator = createPageTranslator({
+        getTargetLang: () => targetLanguage,
+        strings: { translateFailed: t('translateFailed', locale), retry: t('retry', locale) },
+      });
+      if (wasOn) pageTranslator.enable();
+    }
+
+    function togglePageTranslation() {
+      if (!pageTranslator) return;
+      if (pageTranslator.isOn()) pageTranslator.disable();
+      else pageTranslator.enable();
     }
 
     await reattach();
@@ -99,6 +130,19 @@ export default defineContentScript({
       if (area !== 'local') return;
       if (!('app:data' in changes)) return;
       void reattach();
+    });
+
+    chrome.runtime.onMessage.addListener((msg: { type?: string }, _sender, sendResponse) => {
+      if (msg?.type === 'page:toggle') {
+        togglePageTranslation();
+        sendResponse({ translated: pageTranslator?.isOn() ?? false });
+        return false;
+      }
+      if (msg?.type === 'page:query') {
+        sendResponse({ translated: pageTranslator?.isOn() ?? false });
+        return false;
+      }
+      return false;
     });
 
     document.addEventListener('mousedown', (e) => {
