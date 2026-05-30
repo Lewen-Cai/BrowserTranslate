@@ -7,8 +7,11 @@ import { computeCacheKey } from '~/core/cache/key';
 import { detectLanguage } from '~/core/language/detect';
 import { autoSystemPrompt } from '~/core/dictionary/prompt';
 import { looksLikeDictionary } from '~/core/dictionary/discriminate';
+import { batchSystemPrompt, batchUserPrompt } from '~/core/batch/prompt';
+import { parseBatchArray } from '~/core/batch/parse';
+import { runBatch } from '~/core/batch/runBatch';
 import { t as i18nT, resolveLocale } from '~/i18n';
-import type { Request, TranslateRequest } from '~/messaging/types';
+import type { Request, TranslateRequest, TranslateBatchRequest } from '~/messaging/types';
 
 export default defineBackground(() => {
   const client = new StorageClient();
@@ -22,6 +25,11 @@ export default defineBackground(() => {
     }
     if (msg.type === 'translate') {
       void handleTranslate(msg, _sender, client, activeAborts);
+      sendResponse({ ok: true });
+      return false;
+    }
+    if (msg.type === 'translate:batch') {
+      void handleTranslateBatch(msg, _sender, client, activeAborts);
       sendResponse({ ok: true });
       return false;
     }
@@ -160,6 +168,131 @@ async function handleTranslate(
     const message = e instanceof Error ? e.message : String(e);
     const kind = e instanceof TranslationProviderError ? e.info.kind : 'unknown';
     send({ type: 'translate:error', requestId: msg.requestId, message, kind });
+  }
+}
+
+async function handleTranslateBatch(
+  msg: TranslateBatchRequest,
+  sender: chrome.runtime.MessageSender,
+  client: StorageClient,
+  activeAborts: Map<string, AbortController>,
+): Promise<void> {
+  const data = await client.loadAppData();
+  const tabId = sender.tab?.id;
+  const send = (payload: object) => {
+    if (tabId !== undefined) chrome.tabs.sendMessage(tabId, payload).catch(() => {});
+    else chrome.runtime.sendMessage(payload).catch(() => {});
+  };
+
+  try {
+    const api = data.api;
+    const missingKey = api.providerType === 'cloud' && !api.apiKey;
+    if (!api.baseUrl || missingKey || !api.model) {
+      const locale = resolveLocale(
+        data.settings.uiLanguage,
+        typeof navigator !== 'undefined' ? navigator.language : 'en',
+      );
+      send({
+        type: 'translate:batch:error',
+        requestId: msg.requestId,
+        message: i18nT('noProfileError', locale),
+        kind: 'auth',
+      });
+      return;
+    }
+    const activeTemplate = data.promptTemplates.find((t) => t.id === api.promptTemplateId);
+    if (!activeTemplate) {
+      send({
+        type: 'translate:batch:error',
+        requestId: msg.requestId,
+        message: 'Prompt template missing',
+        kind: 'unknown',
+      });
+      return;
+    }
+
+    const targetLang = msg.targetLang ?? data.settings.targetLanguage;
+    const systemPrompt = batchSystemPrompt(activeTemplate.systemPrompt);
+    const provider = new OpenAICompatibleProvider({
+      baseUrl: api.baseUrl,
+      apiKey: api.apiKey,
+      model: api.model,
+      customHeaders: api.customHeaders,
+    });
+
+    // One AbortController for the whole batch request: runBatch may call
+    // translateOnce many times (the batch call plus per-segment fallback), and
+    // they all share this controller — one requestId is one user-cancellable
+    // unit, so a single translate:abort cancels the entire page translation.
+    const abortCtl = new AbortController();
+    activeAborts.set(msg.requestId, abortCtl);
+
+    // One provider call for a set of segments → { parsed, raw }.
+    const translateOnce = async (segments: string[]) => {
+      const userContent = batchUserPrompt(segments, targetLang);
+      // Reuse the provider via a throwaway template carrying our prompts.
+      const template = {
+        ...activeTemplate,
+        systemPrompt,
+        userPromptTemplate: userContent, // already-rendered; no {{vars}} inside
+      };
+      let raw = '';
+      await withRetry(async () => {
+        raw = '';
+        for await (const chunk of provider.translate({
+          text: '',
+          targetLang,
+          template,
+          maxTokens: api.maxTokens,
+          stream: false,
+          signal: abortCtl.signal,
+        })) {
+          raw += chunk.delta;
+        }
+      });
+      return { parsed: parseBatchArray(raw, segments.length), raw };
+    };
+
+    const cacheKeyId = `fullpage:${activeTemplate.id}`;
+    const cacheStore = new CacheStore(client, data.settings.cacheTTLDays);
+    const cacheEnabled = data.settings.cacheEnabled;
+
+    const deps = {
+      cacheGet: async (segment: string) => {
+        if (!cacheEnabled) return undefined;
+        const key = await computeCacheKey({
+          text: segment,
+          model: api.model,
+          promptTemplateId: cacheKeyId,
+          targetLang,
+        });
+        return cacheStore.get(key);
+      },
+      cacheSet: async (segment: string, translated: string) => {
+        if (!cacheEnabled || !translated) return;
+        const key = await computeCacheKey({
+          text: segment,
+          model: api.model,
+          promptTemplateId: cacheKeyId,
+          targetLang,
+        });
+        await cacheStore.set(key, translated);
+      },
+      translateOnce,
+    };
+
+    let translations: string[];
+    try {
+      translations = await runBatch(msg.segments, deps);
+    } finally {
+      activeAborts.delete(msg.requestId);
+    }
+
+    send({ type: 'translate:batch:done', requestId: msg.requestId, translations });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    const kind = e instanceof TranslationProviderError ? e.info.kind : 'unknown';
+    send({ type: 'translate:batch:error', requestId: msg.requestId, message, kind });
   }
 }
 
