@@ -26,6 +26,11 @@ describe('renderPrompt', () => {
     expect(result).toBe('Translate: foo {{bar}}');
   });
 
+  it('does not re-substitute mustache syntax that appears inside a value (single-pass)', () => {
+    const out = renderPrompt('{{text}}', { text: 'page with {{foo}} and {{targetLang}} literals' });
+    expect(out).toBe('page with {{foo}} and {{targetLang}} literals');
+  });
+
   it('handles empty template', () => {
     expect(renderPrompt('', { x: 'y' })).toBe('');
   });

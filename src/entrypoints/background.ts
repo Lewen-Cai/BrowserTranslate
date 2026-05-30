@@ -230,17 +230,21 @@ async function handleTranslateBatch(
     // One provider call for a set of segments → { parsed, raw }.
     const translateOnce = async (segments: string[]) => {
       const userContent = batchUserPrompt(segments, targetLang);
-      // Reuse the provider via a throwaway template carrying our prompts.
+      // Pass the batch body as the `text` value through a bare `{{text}}` template.
+      // renderPrompt is single-pass, so any literal {{...}} inside page segments is
+      // preserved verbatim (it lives in the substituted VALUE, not the template, and
+      // is never re-scanned). Putting userContent directly in the template would
+      // re-substitute page-supplied mustaches and silently corrupt the text.
       const template = {
         ...activeTemplate,
         systemPrompt,
-        userPromptTemplate: userContent, // already-rendered; no {{vars}} inside
+        userPromptTemplate: '{{text}}',
       };
       let raw = '';
       await withRetry(async () => {
         raw = '';
         for await (const chunk of provider.translate({
-          text: '',
+          text: userContent,
           targetLang,
           template,
           maxTokens: api.maxTokens,
