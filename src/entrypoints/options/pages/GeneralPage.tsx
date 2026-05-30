@@ -1,6 +1,7 @@
 import { useRef, useState } from 'preact/hooks';
 import { useAppStore } from '~/storage/store';
 import { Input } from '~/ui/components/Input';
+import { HotkeyInput } from '~/ui/components/HotkeyInput';
 import { Select } from '~/ui/components/Select';
 import { Switch } from '~/ui/components/Switch';
 import { Button } from '~/ui/components/Button';
@@ -87,14 +88,26 @@ export function GeneralPage() {
             ]}
             onChange={(e) => update({ triggerMode: (e.target as HTMLSelectElement).value as 'icon' | 'hotkey' })}
           />
-          <Input label={t('hotkey')} value={settings.hotkey} placeholder="Alt+T" mono
-            hint={t('hotkeyHint')}
-            onInput={(e) => update({ hotkey: (e.target as HTMLInputElement).value })}
-          />
-          <Input label={t('fullPageHotkey')} value={settings.fullPageHotkey} placeholder="Alt+A" mono
-            hint={t('hotkeyHint')}
-            onInput={(e) => update({ fullPageHotkey: (e.target as HTMLInputElement).value })}
-          />
+          <div class="space-y-4">
+            <span class="block text-2xs font-mono uppercase tracking-wider text-ap-muted">
+              {t('keyboardShortcuts')}
+            </span>
+            <HotkeyInput
+              label={t('hotkey')}
+              value={settings.hotkey}
+              disabled={settings.triggerMode !== 'hotkey'}
+              recordingLabel={t('pressShortcut')}
+              onChange={(combo) => update({ hotkey: combo })}
+            />
+            <HotkeyInput
+              label={t('fullPageHotkey')}
+              value={settings.fullPageHotkey}
+              disabled={settings.triggerMode !== 'hotkey'}
+              hint={t('hotkeyHint')}
+              recordingLabel={t('pressShortcut')}
+              onChange={(combo) => update({ fullPageHotkey: combo })}
+            />
+          </div>
         </div>
       </div>
 
