@@ -33,4 +33,29 @@ export type PingResponse =
     }
   | { type: 'ping:error'; requestId: string; status?: number; message: string };
 
-export type Request = TranslateRequest | AbortRequest | PingRequest;
+export interface TranslateBatchRequest {
+  type: 'translate:batch';
+  requestId: string;
+  segments: string[];
+  targetLang?: string; // omit → use global setting
+}
+
+export type TranslateBatchResponse =
+  | { type: 'translate:batch:done'; requestId: string; translations: string[] }
+  | { type: 'translate:batch:error'; requestId: string; message: string; kind: string };
+
+/** Popup → active tab content script: control full-page translation. */
+export type PageControlRequest =
+  | { type: 'page:toggle' }
+  | { type: 'page:query' };
+
+/** Content script → popup reply. */
+export interface PageStateResponse {
+  translated: boolean;
+}
+
+export type Request =
+  | TranslateRequest
+  | TranslateBatchRequest
+  | AbortRequest
+  | PingRequest;
