@@ -91,6 +91,10 @@ export function GeneralPage() {
             hint={t('hotkeyHint')}
             onInput={(e) => update({ hotkey: (e.target as HTMLInputElement).value })}
           />
+          <Input label={t('fullPageHotkey')} value={settings.fullPageHotkey} placeholder="Alt+A" mono
+            hint={t('hotkeyHint')}
+            onInput={(e) => update({ fullPageHotkey: (e.target as HTMLInputElement).value })}
+          />
         </div>
       </div>
 
