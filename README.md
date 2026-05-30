@@ -22,6 +22,7 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 ## Features
 
 - Selection-based translation with floating icon (or hotkey-only mode)
+- Full-page bilingual translation — translates the main content of a page in place (navigation, headers and footers are left as-is), keeping the original above each translated block; renders progressively as you scroll (only the visible part is translated); blocks already in your target language are skipped; toggle from the popup ("Translate page" / "Show original"), or with the **Alt+A** hotkey in Hotkey trigger mode
 - Streaming output via Server-Sent Events
 - Cloud / Local provider modes — pick a preset (OpenAI, DeepSeek, Moonshot, Zhipu GLM, Qwen, SiliconFlow, OpenRouter, Mistral; China / International endpoints where applicable) or enter a custom OpenAI-compatible endpoint; local servers need no API key
 - Remembers each provider's key + model — switching providers restores them, no re-typing
@@ -30,7 +31,6 @@ Existing translation extensions either lock LLM access behind paywalls, route yo
 - Dictionary mode — the model automatically decides whether a selection is a word/term to define or text to translate, in one streaming pass; dictionary results show the term's formal translation, pronunciation, part of speech, senses, and an example
 - Settings export / import (Settings → Data) — save your config as JSON, import it on another device; API keys excluded by default (opt-in to include them)
 - Translation cache (configurable TTL)
-- Translation history with search
 - Light / dark theme (follows system)
 - UI available in 8 languages (Simplified/Traditional Chinese, English, Japanese, Korean, Spanish, French, German); auto-detects browser locale
 
@@ -51,9 +51,9 @@ Chrome Web Store listing pending.
    - **Cloud** — pick a provider preset (presets auto-fill the Base URL; multi-region providers offer a China / International endpoint choice) or **Custom** to enter any OpenAI-compatible Base URL, then fill **API Key** and **Model**.
    - **Local** — enter your local **Base URL** (e.g. `http://localhost:11434/v1`) and **Model**. No API key needed.
 3. Click **Apply config** to apply. The status indicator auto-pings on popup open and after Apply — green means endpoint and model are reachable.
-4. Select text on any webpage → click the blue icon (or press **Alt+T**) → see the translation.
+4. Select text on any webpage → click the blue icon → see the translation. (Prefer a keyboard shortcut? Set the trigger mode to **Hotkey** in settings — then your shortcut works instead of the icon.)
 
-Advanced settings (prompt templates, history, theme, UI language) live in the full settings page — accessible via the ⚙ icon at the top-right of the popup.
+Advanced settings (prompt templates, theme, UI language) live in the full settings page — accessible via the ⚙ icon at the top-right of the popup.
 
 ## Develop
 
