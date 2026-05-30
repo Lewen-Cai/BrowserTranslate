@@ -15,6 +15,7 @@ interface Props {
   rect: DOMRect;
   locale: Locale;
   onClose: () => void;
+  notice?: string;
 }
 
 const CARD_WIDTH = 360;
@@ -27,7 +28,7 @@ function friendlyError(raw: string, locale: Locale): string {
   return raw;
 }
 
-export function TranslationCard({ text, rect, locale, onClose }: Props) {
+export function TranslationCard({ text, rect, locale, onClose, notice }: Props) {
   const [received, setReceived] = useState('');   // full text received so far
   const [displayed, setDisplayed] = useState(''); // progressively revealed slice
   const [streaming, setStreaming] = useState(true);
@@ -41,7 +42,7 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
 
   useEffect(() => {
     const animId = window.requestAnimationFrame(() => setVisible(true));
-    void run();
+    if (!notice) void run();
 
     // Typewriter reveal loop: advance `displayed` toward `received` each frame,
     // decoupled from how fast chunks arrive. Reveals all content uniformly; the
@@ -155,25 +156,31 @@ export function TranslationCard({ text, rect, locale, onClose }: Props) {
         </div>
       </div>
       <div class="bt-card-body">
-        {error ? (
-          <div class="bt-card-error">
-            <AlertCircle size={12} class="bt-card-error-icon" />
-            <span>{error}</span>
-          </div>
-        ) : isDict && streaming ? (
-          <span class="bt-card-loading">
-            <Loader2 size={11} class="animate-spin" /> {t('loading', locale)}
-          </span>
-        ) : dictEntry ? (
-          <DictionaryView entry={dictEntry} locale={locale} />
+        {notice ? (
+          <div class="bt-card-notice">{notice}</div>
         ) : (
-          <div class="bt-card-text">
-            {displayed || (streaming && (
+          <>
+            {error ? (
+              <div class="bt-card-error">
+                <AlertCircle size={12} class="bt-card-error-icon" />
+                <span>{error}</span>
+              </div>
+            ) : isDict && streaming ? (
               <span class="bt-card-loading">
                 <Loader2 size={11} class="animate-spin" /> {t('loading', locale)}
               </span>
-            ))}
-          </div>
+            ) : dictEntry ? (
+              <DictionaryView entry={dictEntry} locale={locale} />
+            ) : (
+              <div class="bt-card-text">
+                {displayed || (streaming && (
+                  <span class="bt-card-loading">
+                    <Loader2 size={11} class="animate-spin" /> {t('loading', locale)}
+                  </span>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

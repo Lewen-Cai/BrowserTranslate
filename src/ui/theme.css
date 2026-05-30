@@ -291,6 +291,12 @@ html, body {
   min-height: 1.55em;
   font-size: 13px;
 }
+.bt-card-notice {
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 2px 0;
+  color: rgb(var(--ap-fg-muted));
+}
 .bt-card-loading {
   color: rgb(var(--ap-fg-subtle));
   display: inline-flex;
