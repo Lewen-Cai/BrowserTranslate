@@ -1,10 +1,9 @@
 import { createDefaultAppData } from './defaults';
 import { migrateAppData } from './migrations';
-import type { AppData, CacheEntry, CacheMeta, HistoryEntry } from './schema';
+import type { AppData, CacheEntry, CacheMeta } from './schema';
 
 const KEY_APP = 'app:data';
 const KEY_CACHE_INDEX = 'cache:index';
-const KEY_HISTORY = 'history';
 const CACHE_PREFIX = 'cache:';
 
 export class StorageClient {
@@ -57,18 +56,5 @@ export class StorageClient {
     const toRemove = Object.keys(all).filter((k) => k.startsWith(CACHE_PREFIX));
     if (toRemove.length > 0) await this.local.remove(toRemove);
     await this.local.remove(KEY_CACHE_INDEX);
-  }
-
-  async loadHistory(): Promise<HistoryEntry[]> {
-    const result = await this.local.get(KEY_HISTORY);
-    return (result[KEY_HISTORY] as HistoryEntry[] | undefined) ?? [];
-  }
-
-  async saveHistory(entries: HistoryEntry[]): Promise<void> {
-    await this.local.set({ [KEY_HISTORY]: entries });
-  }
-
-  async clearHistory(): Promise<void> {
-    await this.local.remove(KEY_HISTORY);
   }
 }

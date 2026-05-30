@@ -45,8 +45,6 @@ export interface GlobalSettings {
   fullPageHotkey: string;
   cacheEnabled: boolean;
   cacheTTLDays: number;
-  historyEnabled: boolean;
-  historyMaxEntries: number;
   theme: 'light' | 'dark' | 'auto';
   uiLanguage: 'auto' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'es' | 'fr' | 'de';
 }
@@ -70,15 +68,4 @@ export interface CacheMeta {
 
 export interface CacheEntry {
   translated: string;
-}
-
-export interface HistoryEntry {
-  id: string;
-  sourceText: string;
-  translatedText: string;
-  model: string;        // ← was profileId; snapshot of model used at translation time
-  targetLang: string;
-  url?: string;
-  title?: string;
-  createdAt: number;
 }

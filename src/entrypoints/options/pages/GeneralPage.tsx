@@ -112,7 +112,7 @@ export function GeneralPage() {
       </div>
 
       <div>
-        <SectionHeader number="02" label={t('sectionCacheHistory').toUpperCase()} />
+        <SectionHeader number="02" label={t('sectionCache').toUpperCase()} />
         <div class="space-y-4">
           <Switch
             checked={settings.cacheEnabled}
@@ -123,16 +123,6 @@ export function GeneralPage() {
           <Input label={t('cacheTtl')} type="number" min="1" max="365"
             value={String(settings.cacheTTLDays)} disabled={!settings.cacheEnabled} mono
             onInput={(e) => update({ cacheTTLDays: Math.max(1, parseInt((e.target as HTMLInputElement).value) || 30) })}
-          />
-          <Switch
-            checked={settings.historyEnabled}
-            onChange={(v) => update({ historyEnabled: v })}
-            label={t('saveHistory')}
-            description={t('saveHistoryDesc')}
-          />
-          <Input label={t('historyMax')} type="number" min="10" max="2000"
-            value={String(settings.historyMaxEntries)} disabled={!settings.historyEnabled} mono
-            onInput={(e) => update({ historyMaxEntries: Math.max(10, parseInt((e.target as HTMLInputElement).value) || 200) })}
           />
         </div>
       </div>

@@ -12,8 +12,6 @@ const baseSettings = {
   fullPageHotkey: 'Alt+A',
   cacheEnabled: true,
   cacheTTLDays: 30,
-  historyEnabled: true,
-  historyMaxEntries: 200,
   theme: 'auto' as const,
   uiLanguage: 'auto' as const,
 };

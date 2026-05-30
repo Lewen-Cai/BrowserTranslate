@@ -3,13 +3,12 @@ import { useAppStore } from '~/storage/store';
 import { ApiSettingsPage } from './pages/ApiSettingsPage';
 import { TemplatesPage } from './pages/TemplatesPage';
 import { GeneralPage } from './pages/GeneralPage';
-import { HistoryPage } from './pages/HistoryPage';
-import { KeyRound, MessageSquare, Settings, Globe } from '~/ui/icons';
+import { KeyRound, MessageSquare, Settings } from '~/ui/icons';
 import { cn } from '~/lib/cn';
 import { useT } from '~/i18n';
 import { useApplyTheme } from '~/ui/useApplyTheme';
 
-type Tab = 'general' | 'api' | 'templates' | 'history';
+type Tab = 'general' | 'api' | 'templates';
 
 export function App() {
   const load = useAppStore((s) => s.load);
@@ -26,7 +25,6 @@ export function App() {
     { id: 'general',   num: '01', label: t('navGeneral'),  icon: Settings },
     { id: 'api',       num: '02', label: t('navApi'),      icon: KeyRound },
     { id: 'templates', num: '03', label: t('navPrompts'),  icon: MessageSquare },
-    { id: 'history',   num: '04', label: t('navHistory'),  icon: Globe },
   ];
 
   return (
@@ -71,7 +69,6 @@ export function App() {
           {tab === 'api' && <ApiSettingsPage />}
           {tab === 'templates' && <TemplatesPage />}
           {tab === 'general' && <GeneralPage />}
-          {tab === 'history' && <HistoryPage />}
         </main>
       </div>
     </div>

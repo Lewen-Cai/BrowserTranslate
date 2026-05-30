@@ -1,12 +1,10 @@
 import { StorageClient } from '~/storage/client';
 import { CacheStore } from '~/storage/cacheStore';
-import { HistoryStore } from '~/storage/historyStore';
 import { OpenAICompatibleProvider } from '~/core/providers/openai';
 import { TranslationProviderError } from '~/core/providers/types';
 import { computeCacheKey } from '~/core/cache/key';
 import { detectLanguage } from '~/core/language/detect';
 import { autoSystemPrompt } from '~/core/dictionary/prompt';
-import { looksLikeDictionary } from '~/core/dictionary/discriminate';
 import { batchSystemPrompt, batchUserPrompt } from '~/core/batch/prompt';
 import { parseBatchArray } from '~/core/batch/parse';
 import { runBatch } from '~/core/batch/runBatch';
@@ -149,18 +147,6 @@ async function handleTranslate(
 
     if (cacheKey && full) {
       await new CacheStore(client, data.settings.cacheTTLDays).set(cacheKey, full);
-    }
-    if (data.settings.historyEnabled && full && !looksLikeDictionary(full)) {
-      await new HistoryStore(client, data.settings.historyMaxEntries).add({
-        id: msg.requestId,
-        sourceText: msg.text,
-        translatedText: full,
-        model: api.model,
-        targetLang,
-        url: msg.context?.url,
-        title: msg.context?.title,
-        createdAt: Date.now(),
-      });
     }
 
     send({ type: 'translate:done', requestId: msg.requestId, full, cached: false });
