@@ -18,7 +18,13 @@ export function migrateAppData(input: AppData): AppData {
   data = repairOrphanedApiTemplateRef(data);
   data = fillApiProviderDefaults(data);
   data = seedSavedConfigs(data);
+  data = fillSettingsDefaults(data);
   return data;
+}
+
+function fillSettingsDefaults(data: AppData): AppData {
+  if (typeof data.settings.fullPageHotkey === 'string') return data;
+  return { ...data, settings: { ...data.settings, fullPageHotkey: 'Alt+A' } };
 }
 
 function fillApiProviderDefaults(data: AppData): AppData {

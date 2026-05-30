@@ -42,6 +42,7 @@ export interface GlobalSettings {
   targetLanguage: string;
   triggerMode: 'icon' | 'hotkey';
   hotkey: string;
+  fullPageHotkey: string;
   cacheEnabled: boolean;
   cacheTTLDays: number;
   historyEnabled: boolean;

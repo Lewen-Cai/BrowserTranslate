@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { migrateAppData } from './migrations';
 import { APP_DATA_VERSION } from './schema';
-import type { AppData, ApiSettings } from './schema';
+import type { AppData, ApiSettings, GlobalSettings } from './schema';
 import { BUILTIN_TEMPLATES } from '~/core/prompt/builtin';
 import { createDefaultAppData } from './defaults';
 
@@ -9,6 +9,7 @@ const baseSettings = {
   targetLanguage: 'en',
   triggerMode: 'icon' as const,
   hotkey: 'Alt+T',
+  fullPageHotkey: 'Alt+A',
   cacheEnabled: true,
   cacheTTLDays: 30,
   historyEnabled: true,
@@ -160,5 +161,21 @@ describe('savedConfigs seeding', () => {
     };
     const out = migrateAppData(data);
     expect(out.api.savedConfigs).toEqual({ openai: { baseUrl: 'b', apiKey: 'k', model: 'm' } });
+  });
+});
+
+describe('fullPageHotkey integrity repair', () => {
+  it('fills a missing fullPageHotkey with the default', () => {
+    const data = createDefaultAppData();
+    delete (data.settings as Partial<GlobalSettings>).fullPageHotkey;
+    const out = migrateAppData(data);
+    expect(out.settings.fullPageHotkey).toBe('Alt+A');
+  });
+
+  it('keeps a user-customised fullPageHotkey', () => {
+    const data = createDefaultAppData();
+    data.settings.fullPageHotkey = 'Ctrl+Shift+P';
+    const out = migrateAppData(data);
+    expect(out.settings.fullPageHotkey).toBe('Ctrl+Shift+P');
   });
 });
