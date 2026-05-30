@@ -75,6 +75,7 @@ export default defineContentScript({
       fullPageHotkey?.stop();
       selectionWatcher = null;
       hotkey = null;
+      fullPageHotkey = null;
       if (state !== 'idle') hide();
 
       const data = await client.loadAppData();
@@ -95,18 +96,20 @@ export default defineContentScript({
         selectionWatcher = w;
       }
 
-      const hk = createHotkeyWatcher(data.settings.hotkey, () => {
-        const info = getSelectionInfo() ?? paragraphFallback();
-        if (info) showCard(info);
-      });
-      hk.start();
-      hotkey = hk;
+      if (data.settings.triggerMode === 'hotkey') {
+        const hk = createHotkeyWatcher(data.settings.hotkey, () => {
+          const info = getSelectionInfo() ?? paragraphFallback();
+          if (info) showCard(info);
+        });
+        hk.start();
+        hotkey = hk;
 
-      const fph = createHotkeyWatcher(data.settings.fullPageHotkey, () => {
-        togglePageTranslation();
-      });
-      fph.start();
-      fullPageHotkey = fph;
+        const fph = createHotkeyWatcher(data.settings.fullPageHotkey, () => {
+          togglePageTranslation();
+        });
+        fph.start();
+        fullPageHotkey = fph;
+      }
 
       // Rebuild the translator so it reads the current target language / strings.
       const wasOn = pageTranslator?.isOn() ?? false;
