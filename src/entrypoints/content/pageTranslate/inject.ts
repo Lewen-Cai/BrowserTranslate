@@ -70,6 +70,6 @@ export class BilingualInjector {
     for (const node of this.nodes.values()) node.remove();
     this.nodes.clear();
     this.doc.getElementById(PAGE_TRANSLATE_STYLE_ID)?.remove();
-    this.styleInjected = false;
+    this.styleInjected = false; // load-bearing: lets a later enable() re-inject the stylesheet
   }
 }
